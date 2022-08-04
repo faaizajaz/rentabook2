@@ -1,4 +1,22 @@
 {
+	"debugger_configurations" : [		
+		{
+			"name": "Django",
+			"type": "python",
+			"stopOnEntry": false,
+			"request": "launch",
+			"program": "/home/faaiz/documents/websites/rentabook2/manage.py",
+			"python": "/home/faaiz/.virtualenvs/rentabook2/bin/python",
+			"args": [
+				"runserver",
+				"8000",
+				"--no-color",
+        		"--noreload"
+			],
+			"django": true,
+
+		},
+	],
 	"folders":
 	[
 		{
@@ -7,20 +25,35 @@
 	],
 	"settings":
 	{
+
 		"LSP":
 		{
+
+			"LSP-pylsp":
+			{
+				"enabled": false,
+			},
 			"LSP-pyright":
 			{
 				"enabled": false,
 			},
+			"LSP-pylance":
+			{
+				"enabled": true,
+				"settings":
+				{
+					"python.pythonPath": "/home/faaiz/.virtualenvs/rentabook2/bin/python",
+				},
+			},
 		},
+		"SublimeLinter.linters.pylint.args":
+		[
+			"--load-plugins=pylint_django"
+		],
+		"SublimeLinter.linters.pylint.python": "/home/faaiz/.virtualenvs/rentabook2/bin/python",
+
+		"python_interpreter": "/home/faaiz/.virtualenvs/rentabook2/bin/python",
+
 	},
-	"debugger_configurations":
-	[
-		{
-			"name": "Debug python",
-			"type": "python",
-			"request": "launch",
-		},
-	],
+
 }
