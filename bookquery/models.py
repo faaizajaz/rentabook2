@@ -144,18 +144,21 @@ class BookQuery(models.Model):
 
     def search_fiction(self, num_pages):
 
-        result = LibgenSearch(
-            "fiction", q=self.search_term, language="English", format="epub"
-        ).get_results()
-
+        i = 1
         results_list = []
-        for book in result:
-            print(book)
-            d = {}
-            d["Author"] = result[book]["author(s)"]
-            d["Title"] = result[book]["title"]
-            d["Size"] = result[book]["file"]
-            results_list.append(d)
+
+        for page in range(num_pages):
+            result = LibgenSearch(
+                "fiction", q=self.search_term, language="English", format="epub", page=i
+            ).get_results()
+
+            for book in result:
+                d = {}
+                d["ID"] = book + 1
+                d["Author"] = result[book]["author(s)"]
+                d["Title"] = result[book]["title"]
+                d["Size"] = result[book]["file"]
+                results_list.append(d)
 
         return results_list
 
