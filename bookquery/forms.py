@@ -1,6 +1,6 @@
 from django.forms import ChoiceField, ModelForm, RadioSelect
 
-from .models import BookQueryNonFiction
+from .models import BookQuery
 
 
 class BookQueryForm(ModelForm):
@@ -13,5 +13,5 @@ class BookQueryForm(ModelForm):
     )
 
     class Meta:
-        model = BookQueryNonFiction
+        model = BookQuery
         exclude = ["user", "pages"]

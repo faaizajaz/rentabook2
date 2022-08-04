@@ -8,12 +8,13 @@ def BookQueryView(request, **kwargs):
     if request.method == "POST":
         form = BookQueryForm(request.POST)
         if form.is_valid():
-            query = form.save(commit=True)
+            query = form.save(commit=False)
             query.user = request.user
             query.save()
 
             num_pages = query.get_num_pages()
             print(num_pages)
+            print(query.search_type)
 
             # Here we need to figure out how many pages are there.
             # query.get

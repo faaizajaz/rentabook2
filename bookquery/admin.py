@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from .models import BookQueryNonFiction
+from .models import BookQuery
 
-admin.site.register(BookQueryNonFiction)
+admin.site.register(BookQuery)
 
 # Register your models here.
