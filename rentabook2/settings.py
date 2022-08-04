@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "user.apps.UserConfig",
+    "bookquery.apps.BookqueryConfig",
     "crispy_forms",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -144,3 +145,7 @@ EMAIL_HOST_USER = "rentsbooks@gmail.com"
 EMAIL_HOST_PASSWORD = "pjztfsxfrndaysci"
 EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = "rentsbooks@gmail.com"
+
+LOGIN_URL = "login"
+
+LOGIN_REDIRECT_URL = "search"
