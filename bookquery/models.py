@@ -15,8 +15,19 @@ class BookQuery(models.Model):
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     pages = models.IntegerField(null=True, blank=True)
 
+    FICTION = "Fiction"
+    NON_FICTION = "Non-fiction"
+
+    SEARCH_TYPE_CHOICES = [(FICTION, "Fiction"), (NON_FICTION, "Non-fiction")]
+    search_type = models.CharField(
+        max_length=500, choices=SEARCH_TYPE_CHOICES, default=FICTION
+    )
+
     def __str__(self):
         try:
             return f"'{self.search_term}' by {self.user.username}"
         except AttributeError:
             return f"'{self.search_term}' by unknown user (something is WRONG)."
+
+    def get_num_pages(self, option):
+        return
