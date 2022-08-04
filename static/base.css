@@ -57,7 +57,7 @@ a:hover {
     font-size: 20px;
 }
 
-#id_any_field,
+#id_search_term,
 #id_username,
 #id_password,
 #id_email,
@@ -73,7 +73,7 @@ a:hover {
     margin-bottom: 10px;
 }
 
-#div_id_any_field .control-label .asteriskField {
+#div_id_search_term .control-label .asteriskField {
     color: #212c3e;
 }
 
