@@ -17,7 +17,8 @@ def BookQueryView(request, **kwargs):
             ########## FICTION #############
             if query.search_type == "Fiction":
                 num_pages = query.get_num_pages_fiction()
-                results = []
+                results = query.search_fiction(num_pages)
+                print(results)
 
                 # HANDLE FICTION SEARCH AND RETRIEVAL HERE
 

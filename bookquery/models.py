@@ -55,8 +55,6 @@ class BookQuery(models.Model):
         except AttributeError:
             return f"'{self.search_term}' by unknown user (something is WRONG)."
 
-    ########## ANNOYING LEGACY CODE TO HANDLE NON-FICTION PAGE NUMS ############
-
     def get_num_pages_non_fiction(self):
         query_parsed = "%20".join(self.search_term.split(" "))
         search_url = f"https://libgen.is/search.php?req={query_parsed}&open-0&res=100&column=def&sort=def&sortmode=ASC&page=1"
@@ -87,7 +85,7 @@ class BookQuery(models.Model):
 
         return num_pages
 
-    ############################################################################
+    ########## ANNOYING LEGACY CODE TO HANDLE NON-FICTION ############
 
     def search_non_fiction(self, num_pages):
         try:
@@ -141,3 +139,12 @@ class BookQuery(models.Model):
         subheadings = soup.find_all("i")
         for subheading in subheadings:
             subheading.decompose()
+
+    ####################### END LEGACY CODE ########################
+
+    def search_fiction(self, num_pages):
+
+        result = LibgenSearch(
+            "fiction", q=self.search_term, language="English", format="epub"
+        )
+        return result.get_results()
