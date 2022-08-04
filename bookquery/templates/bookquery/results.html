@@ -121,7 +121,7 @@
                 <th>Format</th>
               </tr>
                 <div v-if="{{json_results}}">
-                  <tr class="resultrow" v-for="book in {{json_results}}" @click="selectedBook = book.ID; searchComplete = false; selectedBookTitle = book.Title; error = false; selectedBookExtension = book.Extension" :class="[book.ID == selectedBook ? 'selectedbook' : 'unselected']">
+                  <tr class="resultrow" v-for="book in {{json_results}}" @click="selectedBook = book.ID; searchComplete = false; selectedBookTitle = book.Title; error = false; selectedBookExtension = book.Extension; getSizeScale(book.Size);" :class="[book.ID == selectedBook ? 'selectedbook' : 'unselected']">
                     <td>
                       <input type="radio" :id="book.ID" :value="book.ID" v-model="selectedBook" :checked="selectedBook == book.ID">
                       <label :for="book.ID"></label>
@@ -232,6 +232,19 @@
               return "error"
             }
 
+          },
+
+          getSizeScale(size) {
+            sizeNumbers = parseFloat(size.match(/[\d\.]/g).join(''));
+            sizeLetters = size.replace(/[^a-zA-Z]+/g, '');
+
+            if (sizeLetters == "Kb") {
+              console.log("It is in KB")
+              // Return 90 as the size
+
+            } else {
+              console.log(parseInt(90*sizeNumbers))
+            }
           }
 
         }
