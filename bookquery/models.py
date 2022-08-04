@@ -20,7 +20,10 @@ class BookQuery(models.Model):
 
     SEARCH_TYPE_CHOICES = [(FICTION, "Fiction"), (NON_FICTION, "Non-fiction")]
     search_type = models.CharField(
-        max_length=500, choices=SEARCH_TYPE_CHOICES, default=FICTION
+        max_length=500,
+        choices=SEARCH_TYPE_CHOICES,
+        default=FICTION,
+        verbose_name="Choose fiction or non-fiction.",
     )
 
     def __str__(self):

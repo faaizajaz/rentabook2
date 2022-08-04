@@ -233,3 +233,7 @@ input[type="radio"] {
     float: left;
     margin-bottom: 50px;
 }
+
+.asteriskField {
+    display: none;
+}
