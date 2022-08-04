@@ -12,7 +12,11 @@ def BookQueryView(request, **kwargs):
             query.user = request.user
             query.save()
 
-            num_pages = query.get_num_pages_fiction()
+            if query.search_type == "Fiction":
+                num_pages = query.get_num_pages_fiction()
+            else:
+                num_pages = query.get_num_pages_non_fiction()
+
             print(num_pages)
             print(query.search_type)
 
