@@ -1,0 +1,253 @@
+{% load static %}
+<html>
+  <head>
+    <title>Books</title>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.12/vue.global.min.js"></script> 
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>  
+
+
+  <style>
+
+.doloading {
+  animation: mymove 700ms infinite;
+  animation-direction: alternate;
+  background: #ffc26a;
+  width: 100%;
+  border-radius: 5px;
+    font-size: 20px;
+    margin-top: 20px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    font-weight: bold;
+    min-height: 100px;
+    display: inline-block;
+
+}
+
+@keyframes mymove {
+  from {background-color: #ff994f}
+  to {background-color: #fff2e0;}
+  
+}
+
+.resultrow{
+  cursor: pointer;
+}
+
+.download-button {
+    width: 100%;
+    background: #ffc26a;
+    border-radius: 5px;
+    font-size: 20px;
+    margin-top: 20px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 20px;
+    font-weight: bold;
+    min-height: 100px;
+    cursor: pointer;
+}
+
+.completed {
+    width: 100%;
+    background: #04b032 !important;
+    border-radius: 5px;
+    font-size: 20px;
+    margin-top: 20px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 20px;
+    font-weight: bold;
+    min-height: 100px;
+    cursor: default;
+}
+
+.error {
+    width: 100%;
+    background: #f20d0d !important;
+    border-radius: 5px;
+    font-size: 20px;
+    margin-top: 20px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 20px;
+    font-weight: bold;
+    min-height: 100px;
+    cursor: default;
+}
+
+.download-button:hover {
+    background: #ffae49;
+}
+
+.booktitle {
+  font-weight: bold;
+  color: #ea434e;
+}
+
+.selectedbook {
+    background: #8f7700 !important;
+    color: black;
+}
+
+  </style> 
+  </head>
+
+  <body id="app">
+
+    <div class="results-box">
+      <div class="login-status">
+        <span class="login-indicator">
+          &#11044
+        </span> Logged in as {{request.user.username}}
+      </div>
+    	<h1>These are the books I've found. Select <b>one</b> to download, or <a class="search-again-link" href="{% url 'search' %}">search again.</a></h1>
+        <div>
+          {% csrf_token %}
+            <table class="results-table">
+              <tr>
+                <th></th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Year</th>
+                <th>Size</th>
+                <th>Format</th>
+              </tr>
+                <div v-if="{{json_results}}">
+                  <tr class="resultrow" v-for="book in {{json_results}}" @click="selectedBook = book.ID; searchComplete = false; selectedBookTitle = book.Title; error = false; selectedBookExtension = book.Extension" :class="[book.ID == selectedBook ? 'selectedbook' : 'unselected']">
+                    <td>
+                      <input type="radio" :id="book.ID" :value="book.ID" v-model="selectedBook" :checked="selectedBook == book.ID">
+                      <label :for="book.ID"></label>
+                    </td>
+                    <td>[[book.Title]]</td>
+                    <td>[[book.Author]]</td>
+                    <td>[[book.Year]]</td>
+                    <td>[[book.Size]]</td>
+                    <td>[[book.Extension]]</td>
+                  </tr>                      
+                </div>
+              </div>
+            </div> 
+          </table>
+          <button :class="getClass()" v-on:click.prevent="testFx(selectedBook)" type="submit">
+            
+            <div v-if="searchOngoing == false && searchComplete == false">
+              <div v-if="selectedBookTitle.length > 0">
+                Download <span class="booktitle">[[selectedBookTitle]]</span> to {{request.user.username}}'s kindle at {{request.user.email}}.
+              </div>
+              <div v-else>
+                Select a book and click here to download to {{request.user.username}}'s kindle.
+              </div>
+              
+            </div>
+            <div v-if="searchOngoing == true && searchComplete == false" class="loader-container">
+              <div v-if="selectedBookExtension == 'epub'">
+                Downloading book. This will take a few minutes.
+              </div>
+              <div v-else>
+                Downloading and converting book. This could take 5 minutes or longer.                
+              </div>
+              
+            </div>
+            <div v-if="searchComplete == true">
+              [[detail]]              
+            </div>
+            
+      </button>
+        </div>        
+      </div>
+      
+    </body>
+
+  
+
+ 
+
+
+  </html>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const App = {
+        data() {
+          return {
+              selectedBook: "",
+              selectedBookTitle: "",
+              selectedBookExtension: "",
+              detail: "",
+              title: "",
+              searchOngoing: false,
+              searchComplete: false,
+              error: false,
+          }
+        },
+        compilerOptions: {
+          delimiters: ["[[", "]]"]
+        },
+        
+        methods: {
+
+
+          testFx (selectedBook) {
+            this.searchOngoing = true;
+            this.searchComplete = false;
+            this.detail = ""
+            this.error = false;
+            let token = document.querySelector("input[name=csrfmiddlewaretoken]").value
+
+            let formData = new FormData();
+            formData.append("csrfmiddlewaretoken", token)
+
+            axios.post(`downloadAPI/${selectedBook}`, formData, { timeout: 480000 }).then((resp) => {
+              console.log(resp)
+              if (resp.data.error) {
+                this.error = true;
+              }
+              this.detail = resp.data.detail
+              this.searchOngoing = false
+              this.searchComplete = true
+              this.selectedBookTitle = ""
+              this.selectedBookExtension = ""
+
+            }).catch((error) => {
+              if(error) {
+                console.log(error)
+                this.detail = resp.data.detail
+              } else {
+                this.detail = "Something went wrong. If you were waiting for more than 5 minutes before this message, check your Kindle, the book may already be there."
+              }
+              
+              this.searchOngoing = false
+              this.searchComplete = true
+              this.selectedBookTitle = ""
+              this.selectedBookExtension = ""
+            })
+
+          },
+
+          getClass() {
+            if (this.searchOngoing == false && this.searchComplete == false) {
+              return "download-button"
+            } else if (this.searchOngoing == true && this.searchComplete == false) {
+              return "doloading"
+            } else if (this.searchComplete == true && this.error == false){
+              return  "completed"
+            } else if (this.searchComplete == true && this.error == true) {
+              return "error"
+            }
+
+          }
+
+        }
+      }
+
+      Vue.createApp(App).mount('#app')
+      })
+  </script>

@@ -6,11 +6,29 @@ from bs4 import BeautifulSoup
 from django.contrib.auth.models import User
 from django.db import models
 from grab_convert_from_libgen import LibgenSearch
+from requests.exceptions import Timeout
 
 
 class BookQuery(models.Model):
     # Some static vars
     search_prompt = "Search for book by title, author, or both."
+    col_names_non_fiction = [
+        "ID",
+        "Author",
+        "Title",
+        "Publisher",
+        "Year",
+        "Pages",
+        "Language",
+        "Size",
+        "Extension",
+        "Mirror_1",
+        "Mirror_2",
+        "Mirror_3",
+        "Mirror_4",
+        "Mirror_5",
+        "Edit",
+    ]
 
     # Model fields
     search_term = models.CharField(max_length=1000, verbose_name=search_prompt)
@@ -70,3 +88,56 @@ class BookQuery(models.Model):
         return num_pages
 
     ############################################################################
+
+    def search_non_fiction(self, num_pages):
+        try:
+            i = 1
+            filtered_data = []
+            for page in range(num_pages):
+
+                query_parsed = "%20".join(self.search_term.split(" "))
+                search_url = f"https://libgen.is/search.php?req={query_parsed}&open-0&res=100&column=def&sort=def&sortmode=ASC&page={i}"
+                search_page = requests.get(search_url, timeout=5)
+
+                soup = BeautifulSoup(search_page.text, "lxml")
+                # print(page)
+
+                self.strip_i_tag_from_soup(soup)
+
+                information_table = soup.find_all("table")[2]
+
+                raw_data = [
+                    [
+                        td.a["href"]
+                        if td.find("a")
+                        and td.find("a").has_attr("title")
+                        and td.find("a")["title"] != ""
+                        else "".join(td.stripped_strings)
+                        for td in row.find_all("td")
+                    ]
+                    for row in information_table.find_all("tr")[
+                        1:
+                    ]  # Skip row 0 as it is the headings row
+                ]
+
+                output_data = [
+                    dict(zip(self.col_names_non_fiction, row)) for row in raw_data
+                ]
+
+                for d in output_data:
+                    if d["Extension"] == "epub":
+                        filtered_data.append(d)
+
+                i = i + 1
+            data = filtered_data
+
+            return data
+        except Timeout:
+            return {"timeout": "timeout"}
+        except:
+            return {"timeout": "timeout"}
+
+    def strip_i_tag_from_soup(self, soup):
+        subheadings = soup.find_all("i")
+        for subheading in subheadings:
+            subheading.decompose()
