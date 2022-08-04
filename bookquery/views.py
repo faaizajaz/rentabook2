@@ -163,7 +163,7 @@ class DownloadView(APIView):
         return JsonResponse(
             {
                 "detail": (
-                    f"Book was successfully sent to your kindle!"
+                    f"Book was successfully downloaded!"
                     " Wait 5 minutes for the book to appear on your Kindle."
                 )
             }
