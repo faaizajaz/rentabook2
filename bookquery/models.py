@@ -146,5 +146,20 @@ class BookQuery(models.Model):
 
         result = LibgenSearch(
             "fiction", q=self.search_term, language="English", format="epub"
-        )
-        return result.get_results()
+        ).get_results()
+
+        results_list = []
+        for book in result:
+            print(book)
+            d = {}
+            d["Author"] = result[book]["author(s)"]
+            d["Title"] = result[book]["title"]
+            d["Size"] = result[book]["file"]
+            results_list.append(d)
+
+        return results_list
+
+
+# {'ID': '2925862', 'Author': 'G.K. Chesterton', 'Title': 'Appreciations and Criticisms of the Works of Charles Dickens', 'Publisher': 'Amazon Digital Services', 'Year': '2009', 'Pages': '296', 'Language': 'English', 'Size': '251 Kb', 'Extension': 'epub', 'Mirror_1': 'http://library.lol/main/B686081E1C1E5C6222160BC939C9AFDF', 'Mirror_2': 'https://cdn1.booksdl.org/ads.php?md5=B686081E1C1E5C6222160BC939C9AFDF', 'Mirror_3': 'https://3lib.net/md5/B686081E1C1E5C6222160BC939C9AFDF', 'Mirror_4': 'https://library.bz/main/edit/B686081E1C1E5C6222160BC939C9AFDF'},
+
+# {'author(s)': 'Selby, Hubert Jr', 'series': '', 'title': 'Requiem for a Dream', 'language': 'English', 'file': 'EPUB / 227\xa0Kb', 'mirror1': 'http://library.lol/fiction/B5A099FFF1378126EC453794036A1CD0', 'mirror2': 'https://library.bz/fiction/edit/B5A099FFF1378126EC45

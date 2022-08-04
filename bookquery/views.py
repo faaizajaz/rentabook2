@@ -20,7 +20,32 @@ def BookQueryView(request, **kwargs):
                 results = query.search_fiction(num_pages)
                 print(results)
 
-                # HANDLE FICTION SEARCH AND RETRIEVAL HERE
+                if len(results) == 0:
+                    print("## RENTABOOK ##: No mobi or epub found on Libgen")
+                else:
+                    if results[0] == "timeout":
+                        print("## RENTABOOK ##: Search timed out.")
+                    else:
+                        print("## RENTABOOK ##: Mobi/epub results found on Libgen")
+
+                json_results = json.dumps(results)
+                request.session["search_results"] = results
+
+                if len(results) > 0:
+                    if results[0] == "timeout":
+                        return render(
+                            request, "bookquery/timeout.html", {"nodata": "nodata"}
+                        )
+                    else:
+                        return render(
+                            request,
+                            "bookquery/results.html",
+                            {"results": results, "json_results": json_results},
+                        )
+                else:
+                    return render(
+                        request, "bookquery/noresults.html", {"nodata": "nodata"}
+                    )
 
             #################### NON-FICTION ##################
             else:
@@ -28,7 +53,7 @@ def BookQueryView(request, **kwargs):
                 results = query.search_non_fiction(num_pages)
 
                 if len(results) == 0:
-                    print("## RENTABOOK ##: No mobi or epub found on Libgren")
+                    print("## RENTABOOK ##: No mobi or epub found on Libgen")
                 else:
                     if results[0] == "timeout":
                         print("## RENTABOOK ##: Search timed out.")
