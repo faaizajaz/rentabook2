@@ -163,8 +163,8 @@ class DownloadView(APIView):
         return JsonResponse(
             {
                 "detail": (
-                    f"{match_book_title} book was successfully sent to your kindle!"
-                    " Feel free to donate to Faaiz to show your appreciation."
+                    f"Book was successfully sent to your kindle!"
+                    " Wait 5 minutes for the book to appear on your Kindle."
                 )
             }
         )
