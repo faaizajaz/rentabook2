@@ -1,0 +1,235 @@
+/****************** BASE CSS (ALL PAGES) ******************/
+
+* {
+    font-family: Lato;
+}
+
+body {
+    background: #f0f0f0;
+    margin-bottom: 100px;
+}
+
+/* unvisited link */
+a:link {
+    color: #8fd4ff;
+}
+
+/* visited link */
+a:visited {
+    color: #8fd4ff;
+}
+
+/* mouse over link */
+a:hover {
+    color: hotpink;
+}
+
+.login-indicator {
+    color: #06b000;
+}
+
+/********************** SEARCH PAGE **********************/
+
+.requiredField,
+#div_id_email .control-label {
+    font-size: 28px;
+}
+
+.help-block,
+.controls ul {
+    font-size: 16px;
+    margin-top: 0px;
+    color: #a6a6a6;
+}
+
+.search-box,
+.login-box,
+.register-box {
+    color: white;
+    background: #212c3e;
+    width: 35%;
+    margin-top: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    /* top/botton 40x, l/r auto. This centers the box */
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+#id_any_field,
+#id_username,
+#id_password,
+#id_email,
+#id_password1,
+#id_password2 {
+    background: white;
+    width: 100%;
+    height: 50px;
+    font-size: 24px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+#div_id_any_field .control-label .asteriskField {
+    color: #212c3e;
+}
+
+#hint_id_password1 {
+    margin: 0px;
+}
+.search-button,
+.login-button,
+.register-button {
+    width: 100%;
+    height: 50px;
+    background: #ffc26a;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+.search-button:hover,
+.login-button:hover,
+.register-button:hover {
+    background: #ffae49;
+}
+
+.login-status {
+    text-align: right;
+    width: 100%;
+    margin-bottom: 15px;
+    font-size: 12px;
+    color: #dedede;
+}
+
+form {
+    margin-bottom: 0px;
+}
+
+/********************** RESULTS PAGE **********************/
+
+.results-box {
+    background: #212c3e;
+    width: 70%;
+    margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0px;
+    /* top/botton 40x, l/r auto. This centers the box */
+    padding: 15px;
+    border-radius: 10px;
+    color: white;
+}
+
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+}
+
+.results-table tr:hover {
+    background: #ba7d25;
+    color: black;
+}
+
+.results-table td {
+    border: 1px solid #eee;
+}
+
+.results-table,
+th,
+td {
+    font-size: 20px;
+    color: white;
+}
+
+th,
+td {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #415370;
+}
+
+th {
+    background-color: #ffc26a;
+    color: black;
+}
+
+input[type="radio"] {
+    margin: 0px;
+    width: 25px;
+    height: 25px;
+}
+
+.download-button {
+    width: 100%;
+    background: #ffc26a;
+    border-radius: 5px;
+    font-size: 20px;
+    margin-top: 20px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    font-weight: bold;
+    min-height: 100px;
+}
+
+.download-button:hover {
+    background: #ffae49;
+}
+
+/********************** LOADER **********************/
+
+.loader-div {
+    margin-top: 0px;
+    margin-bottom: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 35%;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    font-size: 18px;
+}
+
+.loader-div-results {
+    margin-top: 0px;
+    margin-bottom: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    font-size: 18px;
+}
+
+/* .register-box {
+    color: white;
+    background: #212C3E;
+    width: 35%;
+    margin: 250px auto;
+    top/botton 40x, l/r auto. This centers the box
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 20px;
+} */
+
+.loading-text {
+    padding-top: 3px;
+    font-size: 24px;
+    color: #212c3e;
+    float: left;
+    margin-bottom: 50px;
+}

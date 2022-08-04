@@ -1,0 +1,26 @@
+{
+	"folders":
+	[
+		{
+			"path": ".",
+		}
+	],
+	"settings":
+	{
+		"LSP":
+		{
+			"LSP-pyright":
+			{
+				"enabled": false,
+			},
+		},
+	},
+	"debugger_configurations":
+	[
+		{
+			"name": "Debug python",
+			"type": "python",
+			"request": "launch",
+		},
+	],
+}
