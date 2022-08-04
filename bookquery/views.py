@@ -12,7 +12,7 @@ def BookQueryView(request, **kwargs):
             query.user = request.user
             query.save()
 
-            num_pages = query.get_num_pages()
+            num_pages = query.get_num_pages_fiction()
             print(num_pages)
             print(query.search_type)
 

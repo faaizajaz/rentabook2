@@ -39,7 +39,7 @@ class BookQuery(models.Model):
 
     ########## ANNOYING LEGACY CODE TO HANDLE NON-FICTION PAGE NUMS ############
 
-    def get_num_pages(self):
+    def get_num_pages_non_fiction(self):
         query_parsed = "%20".join(self.search_term.split(" "))
         search_url = f"https://libgen.is/search.php?req={query_parsed}&open-0&res=100&column=def&sort=def&sortmode=ASC&page=1"
         search_page = requests.get(search_url, timeout=5)
@@ -53,5 +53,20 @@ class BookQuery(models.Model):
 
         return num_pages
 
+    def get_num_pages_fiction(self):
+        query_parsed = "%20".join(self.search_term.split(" "))
+        search_url = (
+            f"https://libgen.is/fiction/?q={query_parsed}&language=English&format=epub"
+        )
+        search_page = requests.get(search_url, timeout=5)
 
-#############################################################################
+        soup = BeautifulSoup(search_page.text, "lxml")
+
+        num_results_hold = soup.find_all("div", attrs={"class": "catalog_paginator"})[0]
+        results_div = str(num_results_hold.find_next("div"))
+        num_results = int("".join(filter(str.isdigit, results_div)))
+        num_pages = int(math.ceil(num_results / 25))
+
+        return num_pages
+
+    ############################################################################
