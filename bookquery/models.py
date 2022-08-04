@@ -146,6 +146,7 @@ class BookQuery(models.Model):
 
         i = 1
         results_list = []
+        book_id = 1
 
         for page in range(num_pages):
             result = LibgenSearch(
@@ -154,11 +155,19 @@ class BookQuery(models.Model):
 
             for book in result:
                 d = {}
-                d["ID"] = book + 1
+                d["ID"] = str(book_id)
                 d["Author"] = result[book]["author(s)"]
-                d["Title"] = result[book]["title"]
-                d["Size"] = result[book]["file"]
+                # Clean up title
+                title = result[book]["title"].split("ISBN:", 1)[0]
+                d["Title"] = title
+                size_ext = result[book]["file"].split("/", 1)
+                d["Extension"] = size_ext[0]
+                d["Size"] = size_ext[1]
+                d["Mirror_1"] = result[book]["mirror1"]
+                d["Mirror_2"] = result[book]["mirror2"]
+                # d["Mirror_3"] = result[book]["mirror3"]
                 results_list.append(d)
+                book_id = book_id + 1
 
         return results_list
 

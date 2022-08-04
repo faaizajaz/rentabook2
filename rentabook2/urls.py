@@ -28,4 +28,9 @@ urlpatterns = [
         auth_views.LoginView.as_view(template_name="user/login.html"),
         name="login",
     ),
+    path(
+        "downloadAPI/<book_id>",
+        bq_views.DownloadView.as_view(),
+        name="download-book-api",
+    ),
 ]

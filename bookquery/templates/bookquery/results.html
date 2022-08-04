@@ -148,13 +148,7 @@
               
             </div>
             <div v-if="searchOngoing == true && searchComplete == false" class="loader-container">
-              <div v-if="selectedBookExtension == 'epub'">
-                Downloading book. This will take a few minutes.
-              </div>
-              <div v-else>
-                Downloading and converting book. This could take 5 minutes or longer.                
-              </div>
-              
+              Downloading and converting book. This could take 5 minutes or longer.          
             </div>
             <div v-if="searchComplete == true">
               [[detail]]              
@@ -165,11 +159,6 @@
       </div>
       
     </body>
-
-  
-
- 
-
 
   </html>
 
