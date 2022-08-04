@@ -8,7 +8,7 @@ class BookQueryForm(ModelForm):
     search_type = ChoiceField(
         choices=SEARCH_TYPE_CHOICES,
         widget=RadioSelect(),
-        label="Choose fiction or non-fiction.",
+        label="",
         initial="Fiction",
     )
 

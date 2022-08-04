@@ -57,6 +57,28 @@ a:hover {
     font-size: 20px;
 }
 
+.controls {
+    padding-top: 10px;
+    padding-bottom: 0px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+#id_search_type_1,
+#id_search_type_0 {
+    margin-right: 10px;
+    margin-bottom: 20px;
+
+}
+
+.radio {
+    font-size: 24px;
+}
+
+
+
 #id_search_term,
 #id_username,
 #id_password,
@@ -106,6 +128,10 @@ a:hover {
 
 form {
     margin-bottom: 0px;
+}
+
+label {
+    cursor: pointer;
 }
 
 /********************** RESULTS PAGE **********************/
@@ -234,6 +260,9 @@ input[type="radio"] {
     margin-bottom: 50px;
 }
 
+.doloading {
+    margin-top: 0px !important;
+}
 
 
 .asteriskField {
