@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 
+import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,16 +28,16 @@ SECRET_KEY = "django-insecure-s!)m-^c9bp%aub2zgaw3h-opj77kmgcv7ru3^f%(=i+fcdb5pr
 # SECURITY WARNING: don't run with debug turned on in production!
 
 # #DEPLOY
-# DEBUG = False
+DEBUG = False
 
 # DEV
-DEBUG = True
+# DEBUG = True
 
 # DEPLOY
-# ALLOWED_HOSTS = [".faaiz.org"]
+ALLOWED_HOSTS = [".faaiz.org"]
 
 # DEV
-ALLOWED_HOSTS = ["127.0.0.1"]
+# ALLOWED_HOSTS = ["127.0.0.1"]
 
 
 # Application definition
@@ -92,19 +94,19 @@ WSGI_APPLICATION = "rentabook2.wsgi.application"
 
 
 # DEPLOY
-# DATABASES = {"default": dj_database_url.config()}
+DATABASES = {"default": dj_database_url.config()}
 
 # DEV
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "rentabook2",
-        "USER": "faaiz",
-        "PASSWORD": "Outpo3t33",
-        "HOST": "",
-        "PORT": "",
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql_psycopg2",
+#         "NAME": "rentabook2",
+#         "USER": "faaiz",
+#         "PASSWORD": "Outpo3t33",
+#         "HOST": "",
+#         "PORT": "",
+#     }
+# }
 
 
 # Password validation
@@ -166,7 +168,7 @@ LOGIN_REDIRECT_URL = "search"
 
 
 # DEPLOY
-# MEDIA_ROOT = "/storage"
+MEDIA_ROOT = "/storage"
 
 # DEV
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+# MEDIA_ROOT = os.path.join(BASE_DIR, "media")
