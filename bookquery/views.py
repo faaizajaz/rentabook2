@@ -10,8 +10,13 @@ def BookQueryView(request, **kwargs):
         if form.is_valid():
             query = form.save(commit=True)
             query.user = request.user
-            print("You did a search")
             query.save()
+
+            num_pages = query.get_num_pages()
+            print(num_pages)
+
+            # Here we need to figure out how many pages are there.
+            # query.get
 
     else:
         form = BookQueryForm()
