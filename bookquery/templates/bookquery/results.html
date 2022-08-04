@@ -136,6 +136,9 @@
               </div>
             </div> 
           </table>
+          <div v-show="searchComplete == false && searchOngoing == true" id="progressBarHolder">
+            <div id="progressBar"></div>
+          </div>
           <button :class="getClass()" v-on:click.prevent="testFx(selectedBook)" type="submit">
             
             <div v-if="searchOngoing == false && searchComplete == false">
@@ -175,6 +178,8 @@
               searchOngoing: false,
               searchComplete: false,
               error: false,
+              selectedSizeScale: 0,
+              progressIndex: 0,
           }
         },
         compilerOptions: {
@@ -193,6 +198,8 @@
 
             let formData = new FormData();
             formData.append("csrfmiddlewaretoken", token)
+
+            this.runProgressBar();
 
             axios.post(`downloadAPI/${selectedBook}`, formData, { timeout: 480000 }).then((resp) => {
               console.log(resp)
@@ -235,18 +242,41 @@
           },
 
           getSizeScale(size) {
+            // SCALE FACTOR FOR PROGRES BAR
+            var SCALE_FACTOR = 65;
+
+
             sizeNumbers = parseFloat(size.match(/[\d\.]/g).join(''));
             sizeLetters = size.replace(/[^a-zA-Z]+/g, '');
 
             if (sizeLetters == "Kb") {
-              console.log("It is in KB")
-              // Return 90 as the size
+              this.selectedSizeScale = SCALE_FACTOR;
 
             } else {
-              console.log(parseInt(90*sizeNumbers))
+              this.selectedSizeScale = parseInt(SCALE_FACTOR*sizeNumbers)
+            }
+          },
+
+          runProgressBar() {           
+            
+            if (this.progressIndex == 0) {
+              var elem = document.getElementById("progressBar");
+              this.progressIndex = 1;
+              
+              var width = 1;
+              var id = setInterval(frame, this.selectedSizeScale);
+              function frame() {
+                if (width >= 99) {
+                  clearInterval(id);
+                  this.progressIndex = 0;
+                  elem.style.width = "1%";
+                } else {
+                  width++;
+                  elem.style.width = width + "%";
+                }
+              }
             }
           }
-
         }
       }
 

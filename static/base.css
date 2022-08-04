@@ -28,6 +28,20 @@ a:hover {
     color: #06b000;
 }
 
+/* PROGRESS BAR */
+#progressBarHolder {
+  width: 100%;
+  background-color: #ddd;
+}
+
+#progressBar {
+  width: 1%;
+  height: 30px;
+  background-color: #04AA6D;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
 /********************** SEARCH PAGE **********************/
 
 .requiredField,
