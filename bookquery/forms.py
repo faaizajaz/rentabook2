@@ -5,7 +5,12 @@ from .models import BookQuery
 
 class BookQueryForm(ModelForm):
     SEARCH_TYPE_CHOICES = [("Fiction", "Fiction"), ("Non-fiction", "Non-fiction")]
-    search_type = ChoiceField(choices=SEARCH_TYPE_CHOICES, widget=RadioSelect())
+    search_type = ChoiceField(
+        choices=SEARCH_TYPE_CHOICES,
+        widget=RadioSelect(),
+        label="Choose fiction or non-fiction.",
+        initial="Fiction",
+    )
 
     class Meta:
         model = BookQuery
