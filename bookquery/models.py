@@ -28,7 +28,7 @@ class BookQuery(models.Model):
 
     def __str__(self):
         try:
-            return f"'{self.search_term}' by {self.user.username}"
+            return f"'{self.search_term}' in {self.search_type} by {self.user.username}"
         except AttributeError:
             return f"'{self.search_term}' by unknown user (something is WRONG)."
 
