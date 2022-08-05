@@ -74,7 +74,7 @@ class BookQuery(models.Model):
         search_url = (
             f"https://libgen.is/fiction/?q={query_parsed}&language=English&format=epub"
         )
-        search_page = requests.get(search_url, timeout=5)
+        search_page = requests.get(search_url, timeout=10)
 
         soup = BeautifulSoup(search_page.text, "lxml")
 

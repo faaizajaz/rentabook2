@@ -29,7 +29,7 @@ def BookQueryView(request, **kwargs):
             if query.search_type == "Fiction":
                 num_pages = query.get_num_pages_fiction()
                 results = query.search_fiction(num_pages)
-                print(results)
+                # print(results)
 
                 if len(results) == 0:
                     print("## RENTABOOK ##: No mobi or epub found on Libgen")
