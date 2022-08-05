@@ -243,17 +243,18 @@
 
           getSizeScale(size) {
             // SCALE FACTOR FOR PROGRES BAR
-            var SCALE_FACTOR = 45;
+            var SCALE_FACTOR_KB = 65;
+            var SCALE_FACTOR_MB = 45;
 
 
             sizeNumbers = parseFloat(size.match(/[\d\.]/g).join(''));
             sizeLetters = size.replace(/[^a-zA-Z]+/g, '');
 
             if (sizeLetters == "Kb") {
-              this.selectedSizeScale = SCALE_FACTOR;
+              this.selectedSizeScale = SCALE_FACTOR_KB;
 
             } else {
-              this.selectedSizeScale = parseInt(SCALE_FACTOR*sizeNumbers)
+              this.selectedSizeScale = parseInt(SCALE_FACTOR_MB*sizeNumbers)
             }
           },
 
@@ -262,6 +263,7 @@
             if (this.progressIndex == 0) {
               var elem = document.getElementById("progressBar");
               this.progressIndex = 1;
+              elem.style.width = "1%";
               
               var width = 1;
               var id = setInterval(frame, this.selectedSizeScale);
@@ -269,7 +271,7 @@
                 if (width >= 99) {
                   clearInterval(id);
                   this.progressIndex = 0;
-                  elem.style.width = "1%";
+                  //elem.style.width = "1%";
                 } else {
                   width++;
                   elem.style.width = width + "%";
