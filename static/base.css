@@ -32,16 +32,16 @@ a:hover {
 #progressBarHolder {
   width: 100%;
   background-color: #ddd;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 #progressBar {
   width: 1%;
-  height: 20px;
+  height: 15px;
   background-color: #04b032;
   margin-top: 20px;
   margin-bottom: 20px;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 /********************** SEARCH PAGE **********************/
