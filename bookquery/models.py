@@ -158,7 +158,7 @@ class BookQuery(models.Model):
                 d["ID"] = str(book_id)
                 d["Author"] = result[book]["author(s)"]
                 # Clean up title
-                title = result[book]["title"].split("ISBN:", 1)[0]
+                title = result[book]["title"].split("ISBN:", 1)[0].split("ASIN:", 1)[0]
                 d["Title"] = title
                 size_ext = result[book]["file"].split("/", 1)
                 d["Extension"] = size_ext[0]
