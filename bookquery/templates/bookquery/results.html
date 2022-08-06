@@ -194,6 +194,7 @@
             this.searchComplete = false;
             this.detail = ""
             this.error = false;
+            this.progressIndex = 0;
             let token = document.querySelector("input[name=csrfmiddlewaretoken]").value
 
             let formData = new FormData();
@@ -211,7 +212,7 @@
               this.searchComplete = true;
               this.selectedBookTitle = "";
               this.selectedBookExtension = "";
-              this.progressIndex = 0;
+              //this.progressIndex = 0;
 
             }).catch((error) => {
               if(error) {
@@ -225,7 +226,7 @@
               this.searchComplete = true;
               this.selectedBookTitle = "";
               this.selectedBookExtension = "";
-              this.progressIndex = 0;
+              //this.progressIndex = 0;
             })
 
           },
