@@ -180,6 +180,7 @@
               error: false,
               selectedSizeScale: 0,
               progressIndex: 0,
+              progressWidth: 1,
           }
         },
         compilerOptions: {
@@ -268,16 +269,16 @@
               this.progressIndex = 1;
               elem.style.width = "1%";
               
-              var width = 1;
+              this.progressWidth = 1;
               var id = setInterval(frame, this.selectedSizeScale);
               function frame() {
-                if (width >= 99) {
+                if (this.progressWidth >= 99) {
                   clearInterval(id);
                   this.progressIndex = 0;
-                  //elem.style.width = "1%";
+                  //elem.style.this.progressWidth = "1%";
                 } else {
-                  width++;
-                  elem.style.width = width + "%";
+                  this.progressWidth++;
+                  elem.style.width = this.progressWidth + "%";
                 }
               }
             }
