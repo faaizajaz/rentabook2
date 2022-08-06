@@ -262,23 +262,26 @@
             }
           },
 
-          runProgressBar() {           
+          runProgressBar() {
+            var vm = this;           
             
-            if (this.progressIndex == 0) {
+            if (vm.progressIndex == 0) {
               var elem = document.getElementById("progressBar");
-              this.progressIndex = 1;
+              vm.progressIndex = 1;
               elem.style.width = "1%";
               
-              this.progressWidth = 1;
-              var id = setInterval(frame, this.selectedSizeScale);
+              vm.progressWidth = 1;
+              var id = setInterval(frame, vm.selectedSizeScale);
               function frame() {
-                if (this.progressWidth >= 99) {
+                if (vm.progressWidth >= 99) {
                   clearInterval(id);
-                  this.progressIndex = 0;
-                  //elem.style.this.progressWidth = "1%";
+                  vm.progressIndex = 0;
+                  console.log("Over here");
+                  //elem.style.vm.progressWidth = "1%";
                 } else {
-                  this.progressWidth++;
-                  elem.style.width = this.progressWidth + "%";
+                  console.log(vm.progressWidth);
+                  vm.progressWidth = vm.progressWidth + 1;
+                  elem.style.width = vm.progressWidth + "%";
                 }
               }
             }
