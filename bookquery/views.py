@@ -44,16 +44,19 @@ def BookQueryView(request, **kwargs):
 
                 if len(results) > 0:
                     if results[0] == "timeout":
+                        print("## RENTABOOK ##: Redirecting to search timeout page")
                         return render(
                             request, "bookquery/timeout.html", {"nodata": "nodata"}
                         )
                     else:
+                        print("## RENTABOOK ##: Redirecting to results page")
                         return render(
                             request,
                             "bookquery/results.html",
                             {"results": results, "json_results": json_results},
                         )
                 else:
+                    print("## RENTABOOK ##: Redirecting to no results page")
                     return render(
                         request, "bookquery/noresults.html", {"nodata": "nodata"}
                     )
@@ -107,8 +110,6 @@ class DownloadView(APIView):
 
     def post(self, request, book_id=None):
         match_book = self.get_match_book(request, book_id)
-        print(match_book)
-        print(request.session["search_results"])
         match_book_title = match_book["Title"]
 
         try:
