@@ -27,18 +27,6 @@ SECRET_KEY = "django-insecure-s!)m-^c9bp%aub2zgaw3h-opj77kmgcv7ru3^f%(=i+fcdb5pr
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-# #DEPLOY
-DEBUG = False
-
-# DEV
-# DEBUG = True
-
-# DEPLOY
-ALLOWED_HOSTS = [".faaiz.org"]
-
-# DEV
-# ALLOWED_HOSTS = ["127.0.0.1"]
-
 
 # Application definition
 
@@ -91,22 +79,6 @@ WSGI_APPLICATION = "rentabook2.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-
-# DEPLOY
-DATABASES = {"default": dj_database_url.config()}
-
-# DEV
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql_psycopg2",
-#         "NAME": "rentabook2",
-#         "USER": "faaiz",
-#         "PASSWORD": "Outpo3t33",
-#         "HOST": "",
-#         "PORT": "",
-#     }
-# }
 
 
 # Password validation
@@ -174,3 +146,32 @@ MEDIA_ROOT = "/storage"
 
 # DEV
 # MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+
+# DEPLOY
+DATABASES = {"default": dj_database_url.config()}
+
+# DEV
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql_psycopg2",
+#         "NAME": "rentabook2",
+#         "USER": "faaiz",
+#         "PASSWORD": "Outpo3t33",
+#         "HOST": "",
+#         "PORT": "",
+#     }
+# }
+
+# #DEPLOY
+DEBUG = False
+
+# DEV
+# DEBUG = True
+
+
+# DEPLOY
+ALLOWED_HOSTS = [".faaiz.org"]
+
+# DEV
+# ALLOWED_HOSTS = ["127.0.0.1"]
