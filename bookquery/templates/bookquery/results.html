@@ -162,7 +162,7 @@
             
       </button>
       <div class="localDownloadButton" v-show="currentUser === `aisha` && searchCompleteLocal == false">
-      <button :class="getClass()" v-on:click.prevent="localDownload(selectedBook)" type="submit">
+      <button :class="getClassLocal()" v-on:click.prevent="localDownload(selectedBook)" type="submit">
             
             <div v-if="searchOngoingLocal == false && searchCompleteLocal == false">
               <div v-if="selectedBookTitle.length > 0">
@@ -324,6 +324,19 @@
             } else if (this.searchComplete == true && this.error == false){
               return  "completed"
             } else if (this.searchComplete == true && this.error == true) {
+              return "error"
+            }
+
+          },
+
+          getClassLocal() {
+            if (this.searchOngoingLocal == false && this.searchCompleteLocal == false) {
+              return "download-button"
+            } else if (this.searchOngoingLocal == true && this.searchCompleteLocal == false) {
+              return "doloading"
+            } else if (this.searchCompleteLocal == true && this.error == false){
+              return  "completed"
+            } else if (this.searchCompleteLocal == true && this.error == true) {
               return "error"
             }
 
