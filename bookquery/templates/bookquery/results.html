@@ -161,10 +161,10 @@
             </div>
             
       </button>
-      <div class="localDownloadButton" v-show="currentUser === `aisha` && searchComplete == false">
+      <div class="localDownloadButton" v-show="currentUser === `aisha` && searchCompleteLocal == false">
       <button :class="getClass()" v-on:click.prevent="localDownload(selectedBook)" type="submit">
             
-            <div v-if="searchOngoing == false && searchComplete == false">
+            <div v-if="searchOngoingLocal == false && searchCompleteLocal == false">
               <div v-if="selectedBookTitle.length > 0">
                 Download <span class="booktitle">[[selectedBookTitle]]</span> locally for {{user}}
               </div>
@@ -173,17 +173,17 @@
               </div>
               
             </div>
-            <div v-if="searchOngoing == true && searchComplete == false" class="loader-container">
+            <div v-if="searchOngoingLocal == true && searchCompleteLocal == false" class="loader-container">
               Getting download link for you.         
             </div>
-            <div v-if="searchComplete == true">
+            <div v-if="searchCompleteLocal == true">
               [[localDetail]]
             </div>
             
       </button>
       
     </div>
-    <div v-if="searchComplete == true && currentUser === `aisha`">
+    <div v-if="searchCompleteLocal == true && currentUser === `aisha`">
               <a v-bind:href="downloadLink">Click to download [[selectedBookTitle]].</a>  
             </div>
         </div>        
@@ -206,6 +206,8 @@
               title: "",
               searchOngoing: false,
               searchComplete: false,
+              searchOngoingLocal: false,
+              searchCompleteLocal: false,
               error: false,
               selectedSizeScale: 0,
               progressIndex: 0,
@@ -226,8 +228,8 @@
         methods: {
 
           localDownload (selectedBook) {
-            this.searchOngoing = true;
-            this.searchComplete = false;
+            this.searchOngoingLocal = true;
+            this.searchCompleteLocal = false;
             this.localDetail = ""
             this.error = false;
             this.progressIndex = 0;
@@ -246,10 +248,10 @@
               this.localDetail = resp.data.detail;
               //this.detail = resp.data.download_link;
               this.downloadLink = resp.data.download_link;
-              this.searchOngoing = false;
-              this.searchComplete = true;
+              this.searchOngoingLocal = false;
+              this.searchCompleteLocal = true;
               //this.selectedBookTitle = "";
-              this.selectedBookExtension = "";
+              //this.selectedBookExtension = "";
               //this.progressIndex = 0;
 
             }).catch((error) => {
@@ -261,8 +263,8 @@
                 this.detail = "Something went wrong."
               }
               
-              this.searchOngoing = false;
-              this.searchComplete = true;
+              this.searchOngoingLocal = false;
+              this.searchCompleteLocal = true;
               this.selectedBookTitle = "";
               this.selectedBookExtension = "";
               //this.progressIndex = 0;
