@@ -33,4 +33,9 @@ urlpatterns = [
         bq_views.DownloadView.as_view(),
         name="download-book-api",
     ),
+    path(
+        "downloadLocalAPI/<book_id>",
+        bq_views.DownloadLocalView.as_view(),
+        name="download-local-api",
+    ),
 ]

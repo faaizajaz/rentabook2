@@ -7,6 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.12/vue.global.min.js"></script> 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>  
+    <script>
+      var currentUser = "{{user | safe}}";
+    </script>
 
 
   <style>
@@ -139,7 +142,7 @@
           <div v-show="searchComplete == false && searchOngoing == true" id="progressBarHolder">
             <div id="progressBar"></div>
           </div>
-          <button :class="getClass()" v-on:click.prevent="testFx(selectedBook)" type="submit">
+          <button :class="getClass()" v-on:click.prevent="downloadToKindle(selectedBook)" type="submit">
             
             <div v-if="searchOngoing == false && searchComplete == false">
               <div v-if="selectedBookTitle.length > 0">
@@ -158,6 +161,31 @@
             </div>
             
       </button>
+      <div class="localDownloadButton" v-show="currentUser === `aisha` && searchComplete == false">
+      <button :class="getClass()" v-on:click.prevent="localDownload(selectedBook)" type="submit">
+            
+            <div v-if="searchOngoing == false && searchComplete == false">
+              <div v-if="selectedBookTitle.length > 0">
+                Download <span class="booktitle">[[selectedBookTitle]]</span> locally for {{user}}
+              </div>
+              <div v-else>
+                Select a book and click here to download a local copy for {{user}}
+              </div>
+              
+            </div>
+            <div v-if="searchOngoing == true && searchComplete == false" class="loader-container">
+              Getting download link for you.         
+            </div>
+            <div v-if="searchComplete == true">
+              [[detail]]
+            </div>
+            
+      </button>
+      
+    </div>
+    <div v-if="searchComplete == true && currentUser === `aisha`">
+              <a v-bind:href="downloadLink">Click to download [[selectedBookTitle]].</a>  
+            </div>
         </div>        
       </div>
       
@@ -181,16 +209,69 @@
               selectedSizeScale: 0,
               progressIndex: 0,
               progressWidth: 1,
+              currentUser: "",
+              downloadLink: "",
           }
         },
+
+        mounted: function() {
+          this.currentUser = currentUser;
+        },
+
         compilerOptions: {
           delimiters: ["[[", "]]"]
         },
         
         methods: {
 
+          localDownload (selectedBook) {
+            this.searchOngoing = true;
+            this.searchComplete = false;
+            this.detail = ""
+            this.error = false;
+            this.progressIndex = 0;
+            let token = document.querySelector("input[name=csrfmiddlewaretoken]").value
 
-          testFx (selectedBook) {
+            let formData = new FormData();
+            formData.append("csrfmiddlewaretoken", token)
+
+            this.runProgressBar();
+
+            axios.post(`downloadLocalAPI/${selectedBook}`, formData, { timeout: 480000 }).then((resp) => {
+              console.log(resp)
+              if (resp.data.error) {
+                this.error = true;
+              }
+              this.detail = resp.data.detail;
+              //this.detail = resp.data.download_link;
+              this.downloadLink = resp.data.download_link;
+              this.searchOngoing = false;
+              this.searchComplete = true;
+              //this.selectedBookTitle = "";
+              this.selectedBookExtension = "";
+              //this.progressIndex = 0;
+
+            }).catch((error) => {
+              if(error) {
+                console.log(error)
+                //this.detail = resp.data.detail
+                this.detail = resp.data.detail;
+              } else {
+                this.detail = "Something went wrong."
+              }
+              
+              this.searchOngoing = false;
+              this.searchComplete = true;
+              this.selectedBookTitle = "";
+              this.selectedBookExtension = "";
+              //this.progressIndex = 0;
+            })
+
+          },
+          
+
+
+          downloadToKindle (selectedBook) {
             this.searchOngoing = true;
             this.searchComplete = false;
             this.detail = ""
@@ -276,10 +357,8 @@
                 if (vm.progressWidth >= 99) {
                   clearInterval(id);
                   vm.progressIndex = 0;
-                  console.log("Over here");
                   //elem.style.vm.progressWidth = "1%";
                 } else {
-                  console.log(vm.progressWidth);
                   vm.progressWidth = vm.progressWidth + 1;
                   elem.style.width = vm.progressWidth + "%";
                 }

@@ -53,7 +53,11 @@ def BookQueryView(request, **kwargs):
                         return render(
                             request,
                             "bookquery/results.html",
-                            {"results": results, "json_results": json_results},
+                            {
+                                "results": results,
+                                "json_results": json_results,
+                                "user": query.user.username,
+                            },
                         )
                 else:
                     print("## RENTABOOK ##: Redirecting to no results page")
@@ -89,7 +93,11 @@ def BookQueryView(request, **kwargs):
                         return render(
                             request,
                             "bookquery/results.html",
-                            {"results": results, "json_results": json_results},
+                            {
+                                "results": results,
+                                "json_results": json_results,
+                                "user": query.user.username,
+                            },
                         )
                 else:
                     print("## RENTABOOK ##: Redirecting to no results page")
@@ -226,3 +234,58 @@ class DownloadView(APIView):
         print("# email_book #: SUCCESS - Email sent.")
 
         return
+
+
+class DownloadLocalView(APIView):
+    authentication_classes = (authentication.SessionAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, book_id=None):
+        match_book = self.get_match_book(request, book_id)
+        match_book_title = match_book["Title"]
+
+        try:
+            print("## RENTABOOK ##: Trying to get download link")
+            download_link = self.get_download_link(match_book)
+            print("## RENTABOOK ##: SUCCESS - Got download link")
+            return JsonResponse(
+                {"detail": ("Local download complete."), "download_link": download_link}
+            )
+
+        except:
+            print("## RENTABOOK ##: ERROR - Failed getting download link")
+            return JsonResponse(
+                {
+                    "detail": (
+                        "Couldn't find a download link. Try selecting a different file"
+                    ),
+                    "error": "error",
+                }
+            )
+
+    def get_match_book(self, request, book_id):
+        if request.session["search_results"]:
+            for book in request.session["search_results"]:
+                if book["ID"] == book_id:
+                    request.session["match_book"] = book
+                    return book
+            return
+        else:
+            print("Didn't find a match book.")
+            return
+
+    def get_download_link(self, match_book):
+        mirror_url = match_book["Mirror_1"]
+
+        print("# get_download_link #: Downloading page")
+        with urllib.request.urlopen(mirror_url) as download_page:
+            download_page_html = download_page.read()
+
+        soup = BeautifulSoup(download_page_html, "html.parser")
+
+        print("# get_download_link #: Getting download link")
+        download_link = soup.h2.a.get("href")
+
+        print("# get_download_link #: SUCCESS - Got the download link")
+
+        return download_link
