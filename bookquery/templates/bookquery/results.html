@@ -164,11 +164,11 @@
       } */
 
       .localDownloadButton {
-        grid-area: 1 / 7 / 2 / 8;
+        grid-area: 1 / 10 / 2 / 11;
       }
 
       .kindleDownloadButton {
-        grid-area: 1 / 1 / 2 / 7;
+        grid-area: 1 / 1 / 2 / 10;
       }
 
       .link-copied {
@@ -268,12 +268,12 @@
                 v-if="searchOngoingLocal == true && searchCompleteLocal == false"
                 class="loader-container"
               >
-                Fetching link...
+                Fetching
               </div>
               <div
                 v-if="searchOngoingLocal == false && searchCompleteLocal == true && linkCopied == false"
               >
-                Copy link to clipboard.
+                Copy link
               </div>
               <div
                 v-if="searchOngoingLocal == false && searchCompleteLocal == true && linkCopied == true"
@@ -283,7 +283,7 @@
               <div
                 v-if="searchCompleteLocal == false && searchOngoingLocal == false"
               >
-                Select a book.
+                Select book
               </div>
             </button>
           </div>
