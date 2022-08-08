@@ -149,7 +149,7 @@
         cursor: default;
       }
 
-      .completed-local {
+      /*       .completed-local {
         width: 100%;
         background: #04b032 !important;
         border-radius: 5px;
@@ -161,7 +161,7 @@
         font-weight: bold;
         min-height: 100px;
         cursor: default;
-      }
+      } */
 
       .localDownloadButton {
         grid-area: 1 / 7 / 2 / 8;
@@ -169,6 +169,10 @@
 
       .kindleDownloadButton {
         grid-area: 1 / 1 / 2 / 7;
+      }
+
+      .link-copied {
+        background: #04b032 !important;
       }
     </style>
   </head>
@@ -198,7 +202,7 @@
             <tr
               class="resultrow"
               v-for="book in {{json_results}}"
-              @click="selectedBook = book.ID; searchComplete = false; selectedBookTitle = book.Title; error = false; selectedBookExtension = book.Extension; getSizeScale(book.Size); localDownload(selectedBook);"
+              @click="selectedBook = book.ID; searchComplete = false; selectedBookTitle = book.Title; error = false; selectedBookExtension = book.Extension; getSizeScale(book.Size); localDownload(selectedBook); linkCopied = false"
               :class="[book.ID == selectedBook ? 'selectedbook' : 'unselected']"
             >
               <td>
@@ -256,7 +260,8 @@
           <div class="localDownloadButton" v-if="currentUser === `aisha`">
             <button
               type="submit"
-              :class="getClass()"
+              :class="getClassCopyLink()"
+              class="download-button"
               v-on:click.prevent="copyLink()"
             >
               <div
@@ -266,9 +271,14 @@
                 Fetching link...
               </div>
               <div
-                v-if="searchOngoingLocal == false && searchCompleteLocal == true"
+                v-if="searchOngoingLocal == false && searchCompleteLocal == true && linkCopied == false"
               >
                 Copy link to clipboard.
+              </div>
+              <div
+                v-if="searchOngoingLocal == false && searchCompleteLocal == true && linkCopied == true"
+              >
+                Link copied!
               </div>
               <div
                 v-if="searchCompleteLocal == false && searchOngoingLocal == false"
@@ -303,7 +313,8 @@
           progressIndex: 0,
           progressWidth: 1,
           currentUser: "",
-          downloadLink: ""
+          downloadLink: "",
+          linkCopied: false
         }
       },
 
@@ -445,6 +456,14 @@
           }
         },
 
+        getClassCopyLink() {
+          if (this.linkCopied == true) {
+            return "link-copied"
+          } else {
+            return "link-not-copied"
+          }
+        },
+
         getSizeScale(size) {
           // SCALE FACTOR FOR PROGRES BAR
           var SCALE_FACTOR_KB = 65
@@ -484,6 +503,7 @@
         },
 
         copyLink() {
+          this.linkCopied = true
           return navigator.clipboard.writeText(this.downloadLink)
         }
       }
