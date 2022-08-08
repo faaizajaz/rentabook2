@@ -3,387 +3,432 @@
   <head>
     <title>Books</title>
 
-    <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.12/vue.global.min.js"></script> 
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>  
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'base.css' %}"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.12/vue.global.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
-      var currentUser = "{{user | safe}}";
+      var currentUser = "{{user | safe}}"
     </script>
 
+    <style>
+      .doloading {
+        animation: mymove 700ms infinite;
+        animation-direction: alternate;
+        background: #ffc26a;
+        width: 100%;
+        border-radius: 5px;
+        font-size: 20px;
+        margin-top: 20px;
+        margin-right: auto;
+        margin-left: auto;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 1px;
+        padding-bottom: 1px;
+        font-weight: bold;
+        min-height: 100px;
+        display: inline-block;
+      }
 
-  <style>
+      @keyframes mymove {
+        from {
+          background-color: #ff994f;
+        }
+        to {
+          background-color: #fff2e0;
+        }
+      }
 
-.doloading {
-  animation: mymove 700ms infinite;
-  animation-direction: alternate;
-  background: #ffc26a;
-  width: 100%;
-  border-radius: 5px;
-    font-size: 20px;
-    margin-top: 20px;
-    margin-right: auto;
-    margin-left: auto;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 1px;
-    padding-bottom: 1px;
-    font-weight: bold;
-    min-height: 100px;
-    display: inline-block;
+      .resultrow {
+        cursor: pointer;
+      }
 
-}
+      .download-button {
+        width: 100%;
+        background: #ffc26a;
+        border-radius: 5px;
+        font-size: 20px;
+        margin-top: 20px;
+        margin-right: auto;
+        margin-left: auto;
+        padding-left: 20px;
+        font-weight: bold;
+        min-height: 100px;
+        cursor: pointer;
+      }
 
-@keyframes mymove {
-  from {background-color: #ff994f}
-  to {background-color: #fff2e0;}
-  
-}
+      .completed {
+        width: 100%;
+        background: #04b032 !important;
+        border-radius: 5px;
+        font-size: 20px;
+        margin-top: 20px;
+        margin-right: auto;
+        margin-left: auto;
+        padding-left: 20px;
+        font-weight: bold;
+        min-height: 100px;
+        cursor: default;
+      }
 
-.resultrow{
-  cursor: pointer;
-}
+      .error {
+        width: 100%;
+        background: #f20d0d !important;
+        border-radius: 5px;
+        font-size: 20px;
+        margin-top: 20px;
+        margin-right: auto;
+        margin-left: auto;
+        padding-left: 20px;
+        font-weight: bold;
+        min-height: 100px;
+        cursor: default;
+      }
 
-.download-button {
-    width: 100%;
-    background: #ffc26a;
-    border-radius: 5px;
-    font-size: 20px;
-    margin-top: 20px;
-    margin-right: auto;
-    margin-left: auto;
-    padding-left: 20px;
-    font-weight: bold;
-    min-height: 100px;
-    cursor: pointer;
-}
+      .download-button:hover {
+        background: #ffae49;
+      }
 
-.completed {
-    width: 100%;
-    background: #04b032 !important;
-    border-radius: 5px;
-    font-size: 20px;
-    margin-top: 20px;
-    margin-right: auto;
-    margin-left: auto;
-    padding-left: 20px;
-    font-weight: bold;
-    min-height: 100px;
-    cursor: default;
-}
+      .booktitle {
+        font-weight: bold;
+        color: #ea434e;
+      }
 
-.error {
-    width: 100%;
-    background: #f20d0d !important;
-    border-radius: 5px;
-    font-size: 20px;
-    margin-top: 20px;
-    margin-right: auto;
-    margin-left: auto;
-    padding-left: 20px;
-    font-weight: bold;
-    min-height: 100px;
-    cursor: default;
-}
-
-.download-button:hover {
-    background: #ffae49;
-}
-
-.booktitle {
-  font-weight: bold;
-  color: #ea434e;
-}
-
-.selectedbook {
-    background: #8f7700 !important;
-    color: black;
-}
-
-  </style> 
+      .selectedbook {
+        background: #8f7700 !important;
+        color: black;
+      }
+    </style>
   </head>
 
   <body id="app">
-
     <div class="results-box">
       <div class="login-status">
-        <span class="login-indicator">
-          &#11044
-        </span> Logged in as {{request.user.username}}
+        <span class="login-indicator"> &#11044; </span> Logged in as
+        {{request.user.username}}
       </div>
-    	<h1>These are the books I've found. Select <b>one</b> to download, or <a class="search-again-link" href="{% url 'search' %}">search again.</a></h1>
-        <div>
-          {% csrf_token %}
-            <table class="results-table">
-              <tr>
-                <th></th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Year</th>
-                <th>Size</th>
-                <th>Format</th>
-              </tr>
-                <div v-if="{{json_results}}">
-                  <tr class="resultrow" v-for="book in {{json_results}}" @click="selectedBook = book.ID; searchComplete = false; selectedBookTitle = book.Title; error = false; selectedBookExtension = book.Extension; getSizeScale(book.Size);" :class="[book.ID == selectedBook ? 'selectedbook' : 'unselected']">
-                    <td>
-                      <input type="radio" :id="book.ID" :value="book.ID" v-model="selectedBook" :checked="selectedBook == book.ID">
-                      <label :for="book.ID"></label>
-                    </td>
-                    <td>[[book.Title]]</td>
-                    <td>[[book.Author]]</td>
-                    <td>[[book.Year]]</td>
-                    <td>[[book.Size]]</td>
-                    <td>[[book.Extension]]</td>
-                  </tr>                      
-                </div>
-              </div>
-            </div> 
-          </table>
-          <div v-show="searchComplete == false && searchOngoing == true" id="progressBarHolder">
-            <div id="progressBar"></div>
+      <h1>
+        These are the books I've found. Select <b>one</b> to download, or
+        <a class="search-again-link" href="{% url 'search' %}">search again.</a>
+      </h1>
+      <div>
+        {% csrf_token %}
+        <table class="results-table">
+          <tr>
+            <th></th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Year</th>
+            <th>Size</th>
+            <th>Format</th>
+          </tr>
+          <div v-if="{{json_results}}">
+            <tr
+              class="resultrow"
+              v-for="book in {{json_results}}"
+              @click="selectedBook = book.ID; searchComplete = false; selectedBookTitle = book.Title; error = false; selectedBookExtension = book.Extension; getSizeScale(book.Size);"
+              :class="[book.ID == selectedBook ? 'selectedbook' : 'unselected']"
+            >
+              <td>
+                <input
+                  type="radio"
+                  :id="book.ID"
+                  :value="book.ID"
+                  v-model="selectedBook"
+                  :checked="selectedBook == book.ID"
+                />
+                <label :for="book.ID"></label>
+              </td>
+              <td>[[book.Title]]</td>
+              <td>[[book.Author]]</td>
+              <td>[[book.Year]]</td>
+              <td>[[book.Size]]</td>
+              <td>[[book.Extension]]</td>
+            </tr>
           </div>
-          <button :class="getClass()" v-on:click.prevent="downloadToKindle(selectedBook)" type="submit">
-            
-            <div v-if="searchOngoing == false && searchComplete == false">
+        </table>
+        <div
+          v-show="searchComplete == false && searchOngoing == true"
+          id="progressBarHolder"
+        >
+          <div id="progressBar"></div>
+        </div>
+        <button
+          :class="getClass()"
+          v-on:click.prevent="downloadToKindle(selectedBook)"
+          type="submit"
+        >
+          <div v-if="searchOngoing == false && searchComplete == false">
+            <div v-if="selectedBookTitle.length > 0">
+              Download <span class="booktitle">[[selectedBookTitle]]</span> to
+              {{request.user.username}}'s kindle at {{request.user.email}}.
+            </div>
+            <div v-else>
+              Select a book and click here to download to
+              {{request.user.username}}'s kindle.
+            </div>
+          </div>
+          <div
+            v-if="searchOngoing == true && searchComplete == false"
+            class="loader-container"
+          >
+            Downloading and converting book. This could take 5 minutes or
+            longer.
+          </div>
+          <div v-if="searchComplete == true">[[detail]]</div>
+        </button>
+        <div
+          class="localDownloadButton"
+          v-show="currentUser === `aisha` && searchCompleteLocal == false"
+        >
+          <button
+            :class="getClassLocal()"
+            v-on:click.prevent="localDownload(selectedBook)"
+            type="submit"
+          >
+            <div
+              v-if="searchOngoingLocal == false && searchCompleteLocal == false"
+            >
               <div v-if="selectedBookTitle.length > 0">
-                Download <span class="booktitle">[[selectedBookTitle]]</span> to {{request.user.username}}'s kindle at {{request.user.email}}.
+                Download
+                <span class="booktitle">[[selectedBookTitle]]</span> locally for
+                {{user}}
               </div>
               <div v-else>
-                Select a book and click here to download to {{request.user.username}}'s kindle.
+                Select a book and click here to download a local copy for
+                {{user}}
               </div>
-              
             </div>
-            <div v-if="searchOngoing == true && searchComplete == false" class="loader-container">
-              Downloading and converting book. This could take 5 minutes or longer.          
+            <div
+              v-if="searchOngoingLocal == true && searchCompleteLocal == false"
+              class="loader-container"
+            >
+              Getting download link for you.
             </div>
-            <div v-if="searchComplete == true">
-              [[detail]]              
-            </div>
-            
-      </button>
-      <div class="localDownloadButton" v-show="currentUser === `aisha` && searchCompleteLocal == false">
-      <button :class="getClassLocal()" v-on:click.prevent="localDownload(selectedBook)" type="submit">
-            
-            <div v-if="searchOngoingLocal == false && searchCompleteLocal == false">
-              <div v-if="selectedBookTitle.length > 0">
-                Download <span class="booktitle">[[selectedBookTitle]]</span> locally for {{user}}
-              </div>
-              <div v-else>
-                Select a book and click here to download a local copy for {{user}}
-              </div>
-              
-            </div>
-            <div v-if="searchOngoingLocal == true && searchCompleteLocal == false" class="loader-container">
-              Getting download link for you.         
-            </div>
-            <div v-if="searchCompleteLocal == true">
-              [[localDetail]]
-            </div>
-            
-      </button>
-      
-    </div>
-    <div v-if="searchCompleteLocal == true && currentUser === `aisha`">
-              <a v-bind:href="downloadLink">Click to download [[selectedBookTitle]].</a>  
-            </div>
-        </div>        
+            <div v-if="searchCompleteLocal == true">[[localDetail]]</div>
+          </button>
+        </div>
+        <div v-if="searchCompleteLocal == true && currentUser === `aisha`">
+          <a v-bind:href="downloadLink"
+            >Click to download [[selectedBookTitle]].</a
+          >
+        </div>
       </div>
-      
-    </body>
+    </div>
+  </body>
+</html>
 
-  </html>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const App = {
+      data() {
+        return {
+          selectedBook: "",
+          selectedBookTitle: "",
+          selectedBookExtension: "",
+          detail: "",
+          localDetail: "",
+          title: "",
+          searchOngoing: false,
+          searchComplete: false,
+          searchOngoingLocal: false,
+          searchCompleteLocal: false,
+          error: false,
+          selectedSizeScale: 0,
+          progressIndex: 0,
+          progressWidth: 1,
+          currentUser: "",
+          downloadLink: ""
+        }
+      },
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const App = {
-        data() {
-          return {
-              selectedBook: "",
-              selectedBookTitle: "",
-              selectedBookExtension: "",
-              detail: "",
-              localDetail: "",
-              title: "",
-              searchOngoing: false,
-              searchComplete: false,
-              searchOngoingLocal: false,
-              searchCompleteLocal: false,
-              error: false,
-              selectedSizeScale: 0,
-              progressIndex: 0,
-              progressWidth: 1,
-              currentUser: "",
-              downloadLink: "",
-          }
-        },
+      mounted: function () {
+        this.currentUser = currentUser
+      },
 
-        mounted: function() {
-          this.currentUser = currentUser;
-        },
+      compilerOptions: {
+        delimiters: ["[[", "]]"]
+      },
 
-        compilerOptions: {
-          delimiters: ["[[", "]]"]
-        },
-        
-        methods: {
+      methods: {
+        localDownload(selectedBook) {
+          this.searchOngoingLocal = true
+          this.searchCompleteLocal = false
+          this.localDetail = ""
+          this.error = false
+          this.progressIndex = 0
+          let token = document.querySelector(
+            "input[name=csrfmiddlewaretoken]"
+          ).value
 
-          localDownload (selectedBook) {
-            this.searchOngoingLocal = true;
-            this.searchCompleteLocal = false;
-            this.localDetail = ""
-            this.error = false;
-            this.progressIndex = 0;
-            let token = document.querySelector("input[name=csrfmiddlewaretoken]").value
+          let formData = new FormData()
+          formData.append("csrfmiddlewaretoken", token)
 
-            let formData = new FormData();
-            formData.append("csrfmiddlewaretoken", token)
+          this.runProgressBar()
 
-            this.runProgressBar();
-
-            axios.post(`downloadLocalAPI/${selectedBook}`, formData, { timeout: 480000 }).then((resp) => {
+          axios
+            .post(`downloadLocalAPI/${selectedBook}`, formData, {
+              timeout: 480000
+            })
+            .then((resp) => {
               console.log(resp)
               if (resp.data.error) {
-                this.error = true;
+                this.error = true
               }
-              this.localDetail = resp.data.detail;
+              this.localDetail = resp.data.detail
               //this.detail = resp.data.download_link;
-              this.downloadLink = resp.data.download_link;
-              this.searchOngoingLocal = false;
-              this.searchCompleteLocal = true;
+              this.downloadLink = resp.data.download_link
+              this.searchOngoingLocal = false
+              this.searchCompleteLocal = true
               //this.selectedBookTitle = "";
               //this.selectedBookExtension = "";
               //this.progressIndex = 0;
-
-            }).catch((error) => {
-              if(error) {
+            })
+            .catch((error) => {
+              if (error) {
                 console.log(error)
                 //this.detail = resp.data.detail
-                this.detail = resp.data.detail;
+                this.detail = resp.data.detail
               } else {
                 this.detail = "Something went wrong."
               }
-              
-              this.searchOngoingLocal = false;
-              this.searchCompleteLocal = true;
-              this.selectedBookTitle = "";
-              this.selectedBookExtension = "";
+
+              this.searchOngoingLocal = false
+              this.searchCompleteLocal = true
+              this.selectedBookTitle = ""
+              this.selectedBookExtension = ""
               //this.progressIndex = 0;
             })
+        },
 
-          },
-          
+        downloadToKindle(selectedBook) {
+          this.searchOngoing = true
+          this.searchComplete = false
+          this.detail = ""
+          this.error = false
+          this.progressIndex = 0
+          let token = document.querySelector(
+            "input[name=csrfmiddlewaretoken]"
+          ).value
 
+          let formData = new FormData()
+          formData.append("csrfmiddlewaretoken", token)
 
-          downloadToKindle (selectedBook) {
-            this.searchOngoing = true;
-            this.searchComplete = false;
-            this.detail = ""
-            this.error = false;
-            this.progressIndex = 0;
-            let token = document.querySelector("input[name=csrfmiddlewaretoken]").value
+          this.runProgressBar()
 
-            let formData = new FormData();
-            formData.append("csrfmiddlewaretoken", token)
-
-            this.runProgressBar();
-
-            axios.post(`downloadAPI/${selectedBook}`, formData, { timeout: 480000 }).then((resp) => {
+          axios
+            .post(`downloadAPI/${selectedBook}`, formData, { timeout: 480000 })
+            .then((resp) => {
               console.log(resp)
               if (resp.data.error) {
-                this.error = true;
+                this.error = true
               }
-              this.detail = resp.data.detail;
-              this.searchOngoing = false;
-              this.searchComplete = true;
-              this.selectedBookTitle = "";
-              this.selectedBookExtension = "";
+              this.detail = resp.data.detail
+              this.searchOngoing = false
+              this.searchComplete = true
+              this.selectedBookTitle = ""
+              this.selectedBookExtension = ""
               //this.progressIndex = 0;
-
-            }).catch((error) => {
-              if(error) {
+            })
+            .catch((error) => {
+              if (error) {
                 console.log(error)
                 this.detail = resp.data.detail
               } else {
-                this.detail = "Something went wrong. If you were waiting for more than 5 minutes before this message, check your Kindle, the book may already be there."
+                this.detail =
+                  "Something went wrong. If you were waiting for more than 5 minutes before this message, check your Kindle, the book may already be there."
               }
-              
-              this.searchOngoing = false;
-              this.searchComplete = true;
-              this.selectedBookTitle = "";
-              this.selectedBookExtension = "";
+
+              this.searchOngoing = false
+              this.searchComplete = true
+              this.selectedBookTitle = ""
+              this.selectedBookExtension = ""
               //this.progressIndex = 0;
             })
+        },
 
-          },
+        getClass() {
+          if (this.searchOngoing == false && this.searchComplete == false) {
+            return "download-button"
+          } else if (
+            this.searchOngoing == true &&
+            this.searchComplete == false
+          ) {
+            return "doloading"
+          } else if (this.searchComplete == true && this.error == false) {
+            return "completed"
+          } else if (this.searchComplete == true && this.error == true) {
+            return "error"
+          }
+        },
 
-          getClass() {
-            if (this.searchOngoing == false && this.searchComplete == false) {
-              return "download-button"
-            } else if (this.searchOngoing == true && this.searchComplete == false) {
-              return "doloading"
-            } else if (this.searchComplete == true && this.error == false){
-              return  "completed"
-            } else if (this.searchComplete == true && this.error == true) {
-              return "error"
-            }
+        getClassLocal() {
+          if (
+            this.searchOngoingLocal == false &&
+            this.searchCompleteLocal == false
+          ) {
+            return "download-button"
+          } else if (
+            this.searchOngoingLocal == true &&
+            this.searchCompleteLocal == false
+          ) {
+            return "doloading"
+          } else if (this.searchCompleteLocal == true && this.error == false) {
+            return "completed"
+          } else if (this.searchCompleteLocal == true && this.error == true) {
+            return "error"
+          }
+        },
 
-          },
+        getSizeScale(size) {
+          // SCALE FACTOR FOR PROGRES BAR
+          var SCALE_FACTOR_KB = 65
+          var SCALE_FACTOR_MB = 35
 
-          getClassLocal() {
-            if (this.searchOngoingLocal == false && this.searchCompleteLocal == false) {
-              return "download-button"
-            } else if (this.searchOngoingLocal == true && this.searchCompleteLocal == false) {
-              return "doloading"
-            } else if (this.searchCompleteLocal == true && this.error == false){
-              return  "completed"
-            } else if (this.searchCompleteLocal == true && this.error == true) {
-              return "error"
-            }
+          sizeNumbers = parseFloat(size.match(/[\d\.]/g).join(""))
+          sizeLetters = size.replace(/[^a-zA-Z]+/g, "")
 
-          },
+          if (sizeLetters == "Kb") {
+            this.selectedSizeScale = SCALE_FACTOR_KB
+          } else {
+            this.selectedSizeScale = parseInt(SCALE_FACTOR_MB * sizeNumbers)
+          }
+        },
 
-          getSizeScale(size) {
-            // SCALE FACTOR FOR PROGRES BAR
-            var SCALE_FACTOR_KB = 65;
-            var SCALE_FACTOR_MB = 35;
+        runProgressBar() {
+          var vm = this
 
+          if (vm.progressIndex == 0) {
+            var elem = document.getElementById("progressBar")
+            vm.progressIndex = 1
+            elem.style.width = "1%"
 
-            sizeNumbers = parseFloat(size.match(/[\d\.]/g).join(''));
-            sizeLetters = size.replace(/[^a-zA-Z]+/g, '');
-
-            if (sizeLetters == "Kb") {
-              this.selectedSizeScale = SCALE_FACTOR_KB;
-
-            } else {
-              this.selectedSizeScale = parseInt(SCALE_FACTOR_MB*sizeNumbers)
-            }
-          },
-
-          runProgressBar() {
-            var vm = this;           
-            
-            if (vm.progressIndex == 0) {
-              var elem = document.getElementById("progressBar");
-              vm.progressIndex = 1;
-              elem.style.width = "1%";
-              
-              vm.progressWidth = 1;
-              var id = setInterval(frame, vm.selectedSizeScale);
-              function frame() {
-                if (vm.progressWidth >= 99) {
-                  clearInterval(id);
-                  vm.progressIndex = 0;
-                  //elem.style.vm.progressWidth = "1%";
-                } else {
-                  vm.progressWidth = vm.progressWidth + 1;
-                  elem.style.width = vm.progressWidth + "%";
-                }
+            vm.progressWidth = 1
+            var id = setInterval(frame, vm.selectedSizeScale)
+            function frame() {
+              if (vm.progressWidth >= 99) {
+                clearInterval(id)
+                vm.progressIndex = 0
+                //elem.style.vm.progressWidth = "1%";
+              } else {
+                vm.progressWidth = vm.progressWidth + 1
+                elem.style.width = vm.progressWidth + "%"
               }
             }
           }
         }
       }
+    }
 
-      Vue.createApp(App).mount('#app')
-      })
-  </script>
+    Vue.createApp(App).mount("#app")
+  })
+</script>
