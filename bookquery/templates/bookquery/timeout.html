@@ -1,32 +1,32 @@
 {% load static %}
 <html>
-    <head>
-        <title>Search error</title>
+  <head>
+    <title>Search error</title>
 
-        <link
-            rel="stylesheet"
-            type="text/css"
-            href="{% static 'base.css' %}"
-            rel="stylesheet"
-        />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'base.css' %}"
+      rel="stylesheet"
+    />
 
-        <link
-            href="https://fonts.googleapis.com/css2?family=Lato&display=swap"
-            rel="stylesheet"
-        />
-    </head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-    <body>
-        <div class="results-box">
-            <h1>
-                There was a search error. This is nobody's fault and is due to
-                an issue with the Libgen database. Try again in a few minutes.
-            </h1>
-            <h2>
-                <a class="search-again-link" href="{% url 'search' %}"
-                    >Click to try again.</a
-                >
-            </h2>
-        </div>
-    </body>
+  <body>
+    <div class="results-box">
+      <h1>
+        There was a search error. This is nobody's fault and is due to an issue
+        with the Libgen database. Try again in a few minutes.
+      </h1>
+      <h2>
+        <a class="search-again-link" href="{% url 'search' %}"
+          >Click to try again.</a
+        >
+      </h2>
+    </div>
+  </body>
 </html>
