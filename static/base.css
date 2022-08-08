@@ -154,7 +154,7 @@ label {
 
 .results-box {
     background: #212c3e;
-    width: 70%;
+    width: 85%;
     margin-top: 40px;
     margin-left: auto;
     margin-right: auto;
@@ -232,6 +232,26 @@ input[type="radio"] {
 }
 
 .download-button:hover {
+    background: #ffae49;
+}
+
+.download-button-local {
+    width: 100%;
+    background: #ffc26a;
+    border-radius: 5px;
+    font-size: 20px;
+    margin-top: 20px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    font-weight: bold;
+    min-height: 100px;
+}
+
+.download-button-local:hover {
     background: #ffae49;
 }
 
