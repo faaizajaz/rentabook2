@@ -110,7 +110,7 @@
 
       .resultsButtonHolder {
         display: grid;
-        grid-template-columns: repeat(auto-fill, 1fr);
+        grid-template-columns: repeat(auto-fit, 1fr);
         grid-template-rows: 1fr;
         grid-column-gap: 0px;
         grid-row-gap: 0px;
@@ -198,7 +198,7 @@
             <tr
               class="resultrow"
               v-for="book in {{json_results}}"
-              @click="selectedBook = book.ID; searchComplete = false; selectedBookTitle = book.Title; error = false; selectedBookExtension = book.Extension; getSizeScale(book.Size);"
+              @click="selectedBook = book.ID; searchComplete = false; selectedBookTitle = book.Title; error = false; selectedBookExtension = book.Extension; getSizeScale(book.Size); localDownload(selectedBook);"
               :class="[book.ID == selectedBook ? 'selectedbook' : 'unselected']"
             >
               <td>
@@ -253,36 +253,29 @@
               <div v-if="searchComplete == true">[[detail]]</div>
             </button>
           </div>
-          <div
-            class="localDownloadButton"
-            v-if="currentUser === `aisha` && searchCompleteLocal == false"
-          >
+          <div class="localDownloadButton" v-if="currentUser === `aisha`">
             <button
-              :class="getClassLocal()"
-              v-on:click.prevent="localDownload(selectedBook)"
               type="submit"
+              :class="getClass()"
+              v-on:click.prevent="copyLink()"
             >
-              <div
-                v-if="searchOngoingLocal == false && searchCompleteLocal == false"
-              >
-                <div v-if="selectedBookTitle.length > 0">
-                  Download a local copy.
-                </div>
-                <div v-else>Download selected book to computer.</div>
-              </div>
               <div
                 v-if="searchOngoingLocal == true && searchCompleteLocal == false"
                 class="loader-container"
               >
-                Getting download link for you.
+                Fetching link...
               </div>
-              <div v-if="searchCompleteLocal == true">[[localDetail]]</div>
+              <div
+                v-if="searchOngoingLocal == false && searchCompleteLocal == true"
+              >
+                Copy link to clipboard.
+              </div>
+              <div
+                v-if="searchCompleteLocal == false && searchOngoingLocal == false"
+              >
+                Select a book.
+              </div>
             </button>
-          </div>
-          <div v-if="searchCompleteLocal == true && currentUser === `aisha`">
-            <a v-bind:href="downloadLink"
-              >Click to download [[selectedBookTitle]].</a
-            >
           </div>
         </div>
       </div>
@@ -488,6 +481,10 @@
               }
             }
           }
+        },
+
+        copyLink() {
+          return navigator.clipboard.writeText(this.downloadLink)
         }
       }
     }
