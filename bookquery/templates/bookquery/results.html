@@ -236,11 +236,18 @@
               v-on:click.prevent="downloadToKindle(selectedBook)"
               type="submit"
             >
-              <div v-if="searchOngoing == false && searchComplete == false">
+              <div
+                v-if="searchOngoing == false && searchComplete == false && selectedBook != ``"
+              >
                 <div v-if="selectedBookTitle.length > 0">
                   Download
                   <span class="booktitle">[[selectedBookTitle]]</span> to
                   {{request.user.username}}'s kindle at {{request.user.email}}.
+                </div>
+                <div
+                  v-if="searchOngoing == false && searchComplete == false && selectedBook == `` && detail!= ``"
+                >
+                  You need to select a book first!
                 </div>
                 <div v-else>
                   Select a book and click here to download to
@@ -390,37 +397,43 @@
           let formData = new FormData()
           formData.append("csrfmiddlewaretoken", token)
 
-          this.runProgressBar()
+          if (this.selectedBook === "") {
+            this.detail = "Select a book first!"
+          } else {
+            this.runProgressBar()
 
-          axios
-            .post(`downloadAPI/${selectedBook}`, formData, { timeout: 480000 })
-            .then((resp) => {
-              console.log(resp)
-              if (resp.data.error) {
-                this.error = true
-              }
-              this.detail = resp.data.detail
-              this.searchOngoing = false
-              this.searchComplete = true
-              this.selectedBookTitle = ""
-              this.selectedBookExtension = ""
-              //this.progressIndex = 0;
-            })
-            .catch((error) => {
-              if (error) {
-                console.log(error)
+            axios
+              .post(`downloadAPI/${selectedBook}`, formData, {
+                timeout: 480000
+              })
+              .then((resp) => {
+                console.log(resp)
+                if (resp.data.error) {
+                  this.error = true
+                }
                 this.detail = resp.data.detail
-              } else {
-                this.detail =
-                  "Something went wrong. If you were waiting for more than 5 minutes before this message, check your Kindle, the book may already be there."
-              }
+                this.searchOngoing = false
+                this.searchComplete = true
+                this.selectedBookTitle = ""
+                this.selectedBookExtension = ""
+                //this.progressIndex = 0;
+              })
+              .catch((error) => {
+                if (error) {
+                  console.log(error)
+                  this.detail = resp.data.detail
+                } else {
+                  this.detail =
+                    "Something went wrong. If you were waiting for more than 5 minutes before this message, check your Kindle, the book may already be there."
+                }
 
-              this.searchOngoing = false
-              this.searchComplete = true
-              this.selectedBookTitle = ""
-              this.selectedBookExtension = ""
-              //this.progressIndex = 0;
-            })
+                this.searchOngoing = false
+                this.searchComplete = true
+                this.selectedBookTitle = ""
+                this.selectedBookExtension = ""
+                //this.progressIndex = 0;
+              })
+          }
         },
 
         getClass() {
