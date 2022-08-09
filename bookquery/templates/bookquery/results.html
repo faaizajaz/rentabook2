@@ -381,21 +381,24 @@
         },
 
         downloadToKindle(selectedBook) {
-          this.searchOngoing = true
-          this.searchComplete = false
-          this.detail = ""
-          this.error = false
-          this.progressIndex = 0
-          let token = document.querySelector(
-            "input[name=csrfmiddlewaretoken]"
-          ).value
-
-          let formData = new FormData()
-          formData.append("csrfmiddlewaretoken", token)
-
-          if (this.selectedBook === "") {
-            this.detail = "Select a book first!"
+          console.log("Checking if a book is selected")
+          console.log(this.selectedBook.length)
+          if (this.selectedBook.length <= 0) {
+            console.log("No book selected")
+            alert("You need to select a book first!")
           } else {
+            console.log("yet we are here")
+            this.searchOngoing = true
+            this.searchComplete = false
+            this.detail = ""
+            this.error = false
+            this.progressIndex = 0
+            let token = document.querySelector(
+              "input[name=csrfmiddlewaretoken]"
+            ).value
+
+            let formData = new FormData()
+            formData.append("csrfmiddlewaretoken", token)
             this.runProgressBar()
 
             axios
