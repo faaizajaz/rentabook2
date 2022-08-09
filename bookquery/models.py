@@ -143,33 +143,43 @@ class BookQuery(models.Model):
     ####################### END LEGACY CODE ########################
 
     def search_fiction(self, num_pages):
+        try:
+            i = 1
+            results_list = []
+            book_id = 1
 
-        i = 1
-        results_list = []
-        book_id = 1
+            for page in range(num_pages):
+                result = LibgenSearch(
+                    "fiction",
+                    q=self.search_term,
+                    language="English",
+                    format="epub",
+                    page=i,
+                ).get_results()
 
-        for page in range(num_pages):
-            result = LibgenSearch(
-                "fiction", q=self.search_term, language="English", format="epub", page=i
-            ).get_results()
+                for book in result:
+                    d = {}
+                    d["ID"] = str(book_id)
+                    d["Author"] = result[book]["author(s)"]
+                    # Clean up title
+                    title = (
+                        result[book]["title"].split("ISBN:", 1)[0].split("ASIN:", 1)[0]
+                    )
+                    d["Title"] = title
+                    size_ext = result[book]["file"].split("/", 1)
+                    d["Extension"] = size_ext[0]
+                    d["Size"] = size_ext[1]
+                    d["Mirror_1"] = result[book]["mirror1"]
+                    d["Mirror_2"] = result[book]["mirror2"]
+                    # d["Mirror_3"] = result[book]["mirror3"]
+                    results_list.append(d)
+                    book_id = book_id + 1
 
-            for book in result:
-                d = {}
-                d["ID"] = str(book_id)
-                d["Author"] = result[book]["author(s)"]
-                # Clean up title
-                title = result[book]["title"].split("ISBN:", 1)[0].split("ASIN:", 1)[0]
-                d["Title"] = title
-                size_ext = result[book]["file"].split("/", 1)
-                d["Extension"] = size_ext[0]
-                d["Size"] = size_ext[1]
-                d["Mirror_1"] = result[book]["mirror1"]
-                d["Mirror_2"] = result[book]["mirror2"]
-                # d["Mirror_3"] = result[book]["mirror3"]
-                results_list.append(d)
-                book_id = book_id + 1
-
-        return results_list
+            return results_list
+        except Timeout:
+            return {"timeout": "timeout"}
+        except:
+            return {"timeout": "timeout"}
 
 
 # {'ID': '2925862', 'Author': 'G.K. Chesterton', 'Title': 'Appreciations and Criticisms of the Works of Charles Dickens', 'Publisher': 'Amazon Digital Services', 'Year': '2009', 'Pages': '296', 'Language': 'English', 'Size': '251 Kb', 'Extension': 'epub', 'Mirror_1': 'http://library.lol/main/B686081E1C1E5C6222160BC939C9AFDF', 'Mirror_2': 'https://cdn1.booksdl.org/ads.php?md5=B686081E1C1E5C6222160BC939C9AFDF', 'Mirror_3': 'https://3lib.net/md5/B686081E1C1E5C6222160BC939C9AFDF', 'Mirror_4': 'https://library.bz/main/edit/B686081E1C1E5C6222160BC939C9AFDF'},
