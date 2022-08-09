@@ -259,7 +259,10 @@
               <div v-if="searchComplete == true">[[detail]]</div>
             </button>
           </div>
-          <div class="localDownloadButton" v-if="currentUser === `aisha`">
+          <div
+            class="localDownloadButton"
+            v-if="currentUser === `aisha` || currentUser === `faaiz`"
+          >
             <button
               type="submit"
               :class="getClassCopyLink()"
@@ -330,8 +333,7 @@
 
       methods: {
         localDownload(selectedBook) {
-          if (this.currentUser === "aisha") {
-            console.log("Affirmative, aisha and selected")
+          if (this.currentUser === "aisha" || this.currentUser === "faaiz") {
             this.searchOngoingLocal = true
             this.searchCompleteLocal = false
             this.localDetail = ""
@@ -351,7 +353,6 @@
                 timeout: 480000
               })
               .then((resp) => {
-                console.log(resp)
                 if (resp.data.error) {
                   this.error = true
                 }
