@@ -329,53 +329,55 @@
 
       methods: {
         localDownload(selectedBook) {
-          this.searchOngoingLocal = true
-          this.searchCompleteLocal = false
-          this.localDetail = ""
-          this.error = false
-          this.progressIndex = 0
-          let token = document.querySelector(
-            "input[name=csrfmiddlewaretoken]"
-          ).value
+          if (this.currentUser === "aisha") {
+            this.searchOngoingLocal = true
+            this.searchCompleteLocal = false
+            this.localDetail = ""
+            this.error = false
+            this.progressIndex = 0
+            let token = document.querySelector(
+              "input[name=csrfmiddlewaretoken]"
+            ).value
 
-          let formData = new FormData()
-          formData.append("csrfmiddlewaretoken", token)
+            let formData = new FormData()
+            formData.append("csrfmiddlewaretoken", token)
 
-          this.runProgressBar()
+            //this.runProgressBar()
 
-          axios
-            .post(`downloadLocalAPI/${selectedBook}`, formData, {
-              timeout: 480000
-            })
-            .then((resp) => {
-              console.log(resp)
-              if (resp.data.error) {
-                this.error = true
-              }
-              this.localDetail = resp.data.detail
-              //this.detail = resp.data.download_link;
-              this.downloadLink = resp.data.download_link
-              this.searchOngoingLocal = false
-              this.searchCompleteLocal = true
-              //this.selectedBookTitle = "";
-              //this.selectedBookExtension = "";
-              //this.progressIndex = 0;
-            })
-            .catch((error) => {
-              if (error) {
-                console.log(error)
-                //this.detail = resp.data.detail
-                this.detail = resp.data.detail
-              } else {
-                this.detail = "Something went wrong."
-              }
+            axios
+              .post(`downloadLocalAPI/${selectedBook}`, formData, {
+                timeout: 480000
+              })
+              .then((resp) => {
+                console.log(resp)
+                if (resp.data.error) {
+                  this.error = true
+                }
+                this.localDetail = resp.data.detail
+                //this.detail = resp.data.download_link;
+                this.downloadLink = resp.data.download_link
+                this.searchOngoingLocal = false
+                this.searchCompleteLocal = true
+                //this.selectedBookTitle = "";
+                //this.selectedBookExtension = "";
+                //this.progressIndex = 0;
+              })
+              .catch((error) => {
+                if (error) {
+                  console.log(error)
+                  //this.detail = resp.data.detail
+                  this.detail = resp.data.detail
+                } else {
+                  this.detail = "Something went wrong."
+                }
 
-              this.searchOngoingLocal = false
-              this.searchCompleteLocal = true
-              this.selectedBookTitle = ""
-              this.selectedBookExtension = ""
-              //this.progressIndex = 0;
-            })
+                this.searchOngoingLocal = false
+                this.searchCompleteLocal = true
+                this.selectedBookTitle = ""
+                this.selectedBookExtension = ""
+                //this.progressIndex = 0;
+              })
+          }
         },
 
         downloadToKindle(selectedBook) {
