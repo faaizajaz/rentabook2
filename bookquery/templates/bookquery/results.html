@@ -331,6 +331,7 @@
       methods: {
         localDownload(selectedBook) {
           if (this.currentUser === "aisha") {
+            console.log("Affirmative, aisha and selected")
             this.searchOngoingLocal = true
             this.searchCompleteLocal = false
             this.localDetail = ""
@@ -382,7 +383,7 @@
         },
 
         downloadToKindle(selectedBook) {
-          if (this.selectedBook.length <= 0) {
+          if (selectedBook.length <= 0) {
             alert("You need to select a book first!")
           } else {
             this.searchOngoing = true
@@ -512,8 +513,12 @@
         },
 
         copyLink() {
-          this.linkCopied = true
-          return navigator.clipboard.writeText(this.downloadLink)
+          if (this.selectedBook.length <= 0) {
+            alert("You need to select a book first!")
+          } else {
+            this.linkCopied = true
+            return navigator.clipboard.writeText(this.downloadLink)
+          }
         }
       }
     }
