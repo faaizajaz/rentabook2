@@ -24,6 +24,7 @@ def BookQueryView(request, **kwargs):
             query = form.save(commit=False)
             query.user = request.user
             query.save()
+            print("## RENTABOOK ##: Search beginning.")
 
             ########## FICTION #############
             if query.search_type == "Fiction":
