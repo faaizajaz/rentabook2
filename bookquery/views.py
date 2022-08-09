@@ -66,6 +66,11 @@ def BookQueryView(request, **kwargs):
                         return render(
                             request, "bookquery/noresults.html", {"nodata": "nodata"}
                         )
+                except requests.exceptions.ReadTimeout:
+                    print("# Search timed out.")
+                    return render(
+                        request, "bookquery/timeout.html", {"nodata": "nodata"}
+                    )
                 except:
                     print("## RENTABOOK ##: No mobi or epub found on Libgen")
                     return render(
