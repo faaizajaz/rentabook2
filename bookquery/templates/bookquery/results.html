@@ -27,7 +27,7 @@
         width: 100%;
         border-radius: 5px;
         font-size: 20px;
-        margin-top: 20px;
+
         margin-right: auto;
         margin-left: auto;
         padding-left: 20px;
@@ -57,7 +57,7 @@
         background: #ffc26a;
         border-radius: 5px;
         font-size: 20px;
-        margin-top: 20px;
+
         margin-right: auto;
         margin-left: auto;
         padding-left: 20px;
@@ -71,7 +71,7 @@
         background: #04b032 !important;
         border-radius: 5px;
         font-size: 20px;
-        margin-top: 20px;
+
         margin-right: auto;
         margin-left: auto;
         padding-left: 20px;
@@ -85,7 +85,7 @@
         background: #f20d0d !important;
         border-radius: 5px;
         font-size: 20px;
-        margin-top: 20px;
+
         margin-right: auto;
         margin-left: auto;
         padding-left: 20px;
@@ -114,6 +114,7 @@
         grid-template-rows: 1fr;
         grid-column-gap: 0px;
         grid-row-gap: 0px;
+        padding-top: 20px;
       }
 
       .doloading-local {
@@ -123,7 +124,7 @@
         width: 100%;
         border-radius: 5px;
         font-size: 20px;
-        margin-top: 20px;
+
         margin-right: auto;
         margin-left: auto;
         padding-left: 20px;
@@ -140,7 +141,7 @@
         background: #f20d0d !important;
         border-radius: 5px;
         font-size: 20px;
-        margin-top: 20px;
+
         margin-right: auto;
         margin-left: auto;
         padding-left: 20px;
@@ -154,7 +155,7 @@
         background: #04b032 !important;
         border-radius: 5px;
         font-size: 20px;
-        margin-top: 20px;
+        
         margin-right: auto;
         margin-left: auto;
         padding-left: 20px;
@@ -381,13 +382,9 @@
         },
 
         downloadToKindle(selectedBook) {
-          console.log("Checking if a book is selected")
-          console.log(this.selectedBook.length)
           if (this.selectedBook.length <= 0) {
-            console.log("No book selected")
             alert("You need to select a book first!")
           } else {
-            console.log("yet we are here")
             this.searchOngoing = true
             this.searchComplete = false
             this.detail = ""

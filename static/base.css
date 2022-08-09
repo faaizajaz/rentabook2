@@ -40,7 +40,6 @@ a:hover {
   height: 15px;
   background-color: #04b032;
   margin-top: 20px;
-  margin-bottom: 20px;
   border-radius: 5px;
 }
 
@@ -220,7 +219,7 @@ input[type="radio"] {
     background: #ffc26a;
     border-radius: 5px;
     font-size: 20px;
-    margin-top: 20px;
+    
     margin-right: auto;
     margin-left: auto;
     padding-left: 20px;
@@ -240,7 +239,7 @@ input[type="radio"] {
     background: #ffc26a;
     border-radius: 5px;
     font-size: 20px;
-    margin-top: 20px;
+    
     margin-right: auto;
     margin-left: auto;
     padding-left: 20px;
