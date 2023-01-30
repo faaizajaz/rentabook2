@@ -257,7 +257,11 @@ class DownloadView(APIView):
         return downloaded_file
 
     def fix_book_html(self, downloaded_file):
+        from pathlib import Path
+
+        BASE_DIR = Path(__file__).resolve().parent.parent
         print("# fix_book_html #: Fixing HTML")
+        script_url = os.path.join(BASE_DIR, "staticfiles")
         subprocess.call(
             ["calibre-debug", "-e", "/scripts/fix-book-html.py", downloaded_file]
         )
