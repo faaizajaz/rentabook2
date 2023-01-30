@@ -1,2 +1,6 @@
 # Will need to re-add this to requirements if i update it.
 git+https://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@github.com/faaizajaz/libgen-download.git@master
+
+calibre buildpack for conversions
+
+apt buildpack to install calibre libs

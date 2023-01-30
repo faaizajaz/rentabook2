@@ -475,16 +475,19 @@
         },
 
         getSizeScale(size) {
-          // SCALE FACTOR FOR PROGRES BAR
+          // SCALE FACTOR FOR PROGRES BAR. Lower = slower
           var SCALE_FACTOR_KB = 50
           var SCALE_FACTOR_MB = 20
 
+          // separate numeric and alpha part of file size e.g. '1 kb'
           sizeNumbers = parseFloat(size.match(/[\d\.]/g).join(""))
           sizeLetters = size.replace(/[^a-zA-Z]+/g, "")
 
+          // if size is in kb, use the kb (faster) scale factor
           if (sizeLetters == "Kb") {
             this.selectedSizeScale = SCALE_FACTOR_KB
           } else {
+            //Otherwise use the mb scake factor
             this.selectedSizeScale = parseInt(SCALE_FACTOR_MB * sizeNumbers)
           }
         },
