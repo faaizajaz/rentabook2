@@ -1,7 +1,7 @@
 {% load static %}
 <html>
   <head>
-    <title>Books</title>
+    <title>Books - now with 50% more calcium!</title>
 
     <link
       rel="stylesheet"
@@ -253,8 +253,7 @@
                 v-if="searchOngoing == true && searchComplete == false"
                 class="loader-container"
               >
-                Downloading and converting book. This could take a minute or
-                so.
+                Downloading and converting book. This could take a few minutes.
               </div>
               <div v-if="searchComplete == true">[[detail]]</div>
             </button>
