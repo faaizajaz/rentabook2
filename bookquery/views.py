@@ -209,7 +209,7 @@ class DownloadView(APIView):
             {
                 "detail": (
                     f"Book was successfully downloaded!"
-                    " Wait 5 minutes for the book to appear on your Kindle."
+                    " Wait a few minutes for the book to appear on your Kindle."
                 )
             }
         )
