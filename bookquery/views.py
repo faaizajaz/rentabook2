@@ -160,7 +160,7 @@ class DownloadView(APIView):
             )
 
         try:
-            print("## RENTABOOK ##: Tring to download book")
+            print("## RENTABOOK ##: Trying to download book")
             downloaded_file = self.download_book(match_book, download_link)
             print("## RENTABOOK ##: SUCCESS - Downloaded book.")
         except:
@@ -171,6 +171,18 @@ class DownloadView(APIView):
                         "Couldn't download the file for some reason. Try selecting a"
                         " different file."
                     ),
+                    "error": "error",
+                }
+            )
+
+        try:
+            print("## RENTABOOK ##: Fixing HTML errors")
+            self.fix_book_html(downloaded_file)
+        except:
+            print("## RENTABOOK ##: ERROR - Couldn't fix HTML")
+            return JsonResponse(
+                {
+                    "detail": ("Couldn't fix book formatting."),
                     "error": "error",
                 }
             )
@@ -242,6 +254,18 @@ class DownloadView(APIView):
         downloaded_file = os.path.join(settings.MEDIA_ROOT, file_title)
 
         return downloaded_file
+
+    def fix_book_html(self, downloaded_file):
+        from calibre.ebooks.oeb.polish.container import get_container
+        from calibre.ebooks.oeb.polish.pretty import fix_all_html
+
+        container = get_container(downloaded_file, tweak_mode=True)
+
+        fix_all_html(container)
+
+        container.commit(keep_parsed=False)
+
+        return
 
     def email_book(self, request, match_book, downloaded_file):
 
