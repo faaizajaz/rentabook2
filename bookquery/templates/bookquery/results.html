@@ -419,7 +419,7 @@
               .catch((error) => {
                 if (error) {
                   console.log(error)
-                  this.detail = resp.data.detail
+                  this.detail = error.data.detail
                 } else {
                   this.detail =
                     "Something went wrong. If you were waiting for more than 5 minutes before this message, check your Kindle, the book may already be there."
