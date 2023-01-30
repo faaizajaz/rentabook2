@@ -261,10 +261,8 @@ class DownloadView(APIView):
 
         BASE_DIR = Path(__file__).resolve().parent.parent
         print("# fix_book_html #: Fixing HTML")
-        script_url = os.path.join(BASE_DIR, "staticfiles")
-        subprocess.call(
-            ["calibre-debug", "-e", "/scripts/fix-book-html.py", downloaded_file]
-        )
+        script_path = os.path.join(BASE_DIR, "scripts/fix-book-html.py")
+        subprocess.call(["calibre-debug", "-e", script_path, downloaded_file])
         print("# fix_book_html #: Fixed HTML")
         return
 
