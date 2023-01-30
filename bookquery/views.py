@@ -1,5 +1,6 @@
 import json
 import os
+import subprocess
 import urllib.request
 
 import requests
@@ -256,15 +257,11 @@ class DownloadView(APIView):
         return downloaded_file
 
     def fix_book_html(self, downloaded_file):
-        from calibre.ebooks.oeb.polish.container import get_container
-        from calibre.ebooks.oeb.polish.pretty import fix_all_html
-
-        container = get_container(downloaded_file, tweak_mode=True)
-
-        fix_all_html(container)
-
-        container.commit(keep_parsed=False)
-
+        print("# fix_book_html #: Fixing HTML")
+        subprocess.call(
+            ["calibre-debug", "-e", "/scripts/fix-book-html.py", downloaded_file]
+        )
+        print("# fix_book_html #: Fixed HTML")
         return
 
     def email_book(self, request, match_book, downloaded_file):
