@@ -57,7 +57,7 @@ class BookQuery(models.Model):
 
     def get_num_pages_non_fiction(self):
         query_parsed = "%20".join(self.search_term.split(" "))
-        search_url = f"https://libgen.is/search.php?req={query_parsed}&open-0&res=100&column=def&sort=def&sortmode=ASC&page=1"
+        search_url = f"https://libgen.rs/search.php?req={query_parsed}&open-0&res=100&column=def&sort=def&sortmode=ASC&page=1"
         search_page = requests.get(search_url, timeout=10)
 
         soup = BeautifulSoup(search_page.text, "lxml")
@@ -72,7 +72,7 @@ class BookQuery(models.Model):
     def get_num_pages_fiction(self):
         query_parsed = "%20".join(self.search_term.split(" "))
         search_url = (
-            f"https://libgen.is/fiction/?q={query_parsed}&language=English&format=epub"
+            f"https://libgen.rs/fiction/?q={query_parsed}&language=English&format=epub"
         )
         search_page = requests.get(search_url, timeout=10)
 
@@ -94,7 +94,7 @@ class BookQuery(models.Model):
             for page in range(num_pages):
 
                 query_parsed = "%20".join(self.search_term.split(" "))
-                search_url = f"https://libgen.is/search.php?req={query_parsed}&open-0&res=100&column=def&sort=def&sortmode=ASC&page={i}"
+                search_url = f"https://libgen.rs/search.php?req={query_parsed}&open-0&res=100&column=def&sort=def&sortmode=ASC&page={i}"
                 search_page = requests.get(search_url, timeout=10)
 
                 soup = BeautifulSoup(search_page.text, "lxml")
