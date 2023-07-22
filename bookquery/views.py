@@ -4,6 +4,7 @@ import subprocess
 import urllib.request
 
 import requests
+from bookquery.models import DownloadCount
 from bs4 import BeautifulSoup
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage
@@ -132,8 +133,12 @@ def BookQueryView(request, **kwargs):
 
     else:
         form = BookQueryForm()
+    download_count = DownloadCount.objects.get(pk=1)
+    num_downloads = download_count.num_downloads
 
-    return render(request, "bookquery/search.html", {"form": form})
+    return render(
+        request, "bookquery/search.html", {"form": form, "num_downloads": num_downloads}
+    )
 
 
 class DownloadView(APIView):
@@ -273,7 +278,6 @@ class DownloadView(APIView):
         return
 
     def email_book(self, request, match_book, downloaded_file):
-
         subject = f"Emailing: {match_book['Title']}"
         body = ""
         from_email = settings.EMAIL_HOST_USER
