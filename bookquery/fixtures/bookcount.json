@@ -1,9 +1,0 @@
-[
-{
-    "model": "bookquery.downloadcount",
-    "pk": 1,
-    "fields": {
-        "num_downloads": 364
-    }
-}
-]
