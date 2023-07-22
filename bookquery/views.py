@@ -289,6 +289,10 @@ class DownloadView(APIView):
         email.send()
         print("# email_book #: SUCCESS - Email sent.")
 
+        download_count = DownloadCount.objects.get(pk=1)
+        download_count.num_downloads += 1
+        download_count.save()
+
         return
 
 
