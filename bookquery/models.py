@@ -9,6 +9,13 @@ from grab_convert_from_libgen import LibgenSearch
 from requests.exceptions import Timeout
 
 
+class DownloadCount(models.Model):
+    num_downloads = models.IntegerField(default=346)
+
+    def __str__(self):
+        return self.num_downloads
+
+
 class BookQuery(models.Model):
     # Some static vars
     search_prompt = "Search for book by title, author, or both."
@@ -92,7 +99,6 @@ class BookQuery(models.Model):
             i = 1
             filtered_data = []
             for page in range(num_pages):
-
                 query_parsed = "%20".join(self.search_term.split(" "))
                 search_url = f"https://libgen.rs/search.php?req={query_parsed}&open-0&res=100&column=def&sort=def&sortmode=ASC&page={i}"
                 search_page = requests.get(search_url, timeout=10)
