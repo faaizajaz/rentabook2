@@ -164,7 +164,7 @@ DATABASES = {"default": dj_database_url.config()}
 # }
 
 # #DEPLOY
-DEBUG = True
+DEBUG = False
 
 # DEV
 # DEBUG = True
