@@ -10,10 +10,10 @@ from requests.exceptions import Timeout
 
 
 class DownloadCount(models.Model):
-    num_downloads = models.IntegerField(default=346)
+    num_downloads = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
-        return self.num_downloads
+        return str(self.num_downloads)
 
 
 class BookQuery(models.Model):
