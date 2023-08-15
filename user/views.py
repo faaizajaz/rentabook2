@@ -9,7 +9,7 @@ def RegisterUser(request):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("login")
+            return render(request, "user/regcomplete.html", {"nodata": "nodata"})
     else:
         form = UserRegistrationForm()
     return render(request, "user/register.html", {"form": form})
