@@ -18,7 +18,8 @@ class DownloadCount(models.Model):
 
 class BookQuery(models.Model):
     # Some static vars
-    search_prompt = "Search for book by title, author, or both."
+    # Idk why I put this search prompt here, but here it will stay.
+    search_prompt = "Search for a book by title, author, or both."
     col_names_non_fiction = [
         "ID",
         "Author",
