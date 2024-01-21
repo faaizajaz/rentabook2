@@ -295,6 +295,9 @@ class DownloadView(APIView):
         download_count.num_downloads += 1
         download_count.save()
 
+        ## DELETE THE BOOK ##
+        os.remove(downloaded_file)
+
         return
 
 
