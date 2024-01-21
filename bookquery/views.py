@@ -167,6 +167,8 @@ class DownloadView(APIView):
 
         try:
             print("## RENTABOOK ##: Trying to download book")
+            print(match_book)
+            print(download_link)
             downloaded_file = self.download_book(match_book, download_link)
             print("## RENTABOOK ##: SUCCESS - Downloaded book.")
         except:
