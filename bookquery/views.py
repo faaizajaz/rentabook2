@@ -252,7 +252,7 @@ class DownloadView(APIView):
         file_title = f"{match_book['Title']}.epub"
         print(download_link)
         print("# download_book #: Downloading book")
-        r = requests.get(download_link, allow_redirects=True)
+        r = requests.get(download_link, allow_redirects=True, verify=False)
         print("# download_book #: Saving book to file")
         with open(os.path.join(settings.MEDIA_ROOT, file_title), "wb") as f:
             f.write(r.content)
