@@ -36,8 +36,8 @@
         display: inline-block;
       }
 
-      .notification-top-bar {
-  			position: fixed;
+			.notification-top-bar {
+			  position: fixed;
 			  top: 0;
 			  left: 0;
 			  height: 40px;
@@ -49,12 +49,17 @@
 			  font-family: sans-serif;
 			  font-weight: lighter;
 			  font-size: 14px;
+			  display: flex; /* Use flexbox for easy centering */
+			  align-items: center; /* Vertically center the content */
 			}
-			
 			.notification-top-bar p {
 			  padding: 0;
-			  margin: 0;
+			  margin: 0 auto;
+			  background-color: #eb2a3d; /* Red background for the text */
+			  line-height: 1.2; /* Adjust line height as needed for readability */
+			  padding: 5px 10px; /* Add some padding around the text */
 			}
+
 
       @keyframes mymove {
         from {
