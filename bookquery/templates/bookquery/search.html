@@ -36,6 +36,26 @@
         display: inline-block;
       }
 
+      .notification-top-bar {
+  			position: fixed;
+			  top: 0;
+			  left: 0;
+			  height: 40px;
+			  line-height: 40px;
+			  width: 100%;
+			  background: #eb2a3d;
+			  text-align: center;
+			  color: #FFFFFF;
+			  font-family: sans-serif;
+			  font-weight: lighter;
+			  font-size: 14px;
+			}
+			
+			.notification-top-bar p {
+			  padding: 0;
+			  margin: 0;
+			}
+
       @keyframes mymove {
         from {
           background-color: #ff994f;
@@ -48,6 +68,9 @@
   </head>
 
   <body id="app">
+  	<div class="notification-top-bar">
+  		<p>The backend service (www.libgen.rs) for this site has been down since early August 2024. As of now it is unclear of or when this service will be back online. This could be the end folks. See www.reddit.com/r/libgen to learn more.</p>
+		</div>
     <div class="search-box">
       <div class="login-status">
         <span class="login-indicator">&#11044;</span> Logged in as
