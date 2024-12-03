@@ -32,6 +32,15 @@ def BookQueryView(request, **kwargs):
             if query.search_type == "Fiction":
                 try:
                     num_pages = query.get_num_pages_fiction()
+
+                    if num_pages > 10:
+                        print("## RENTABOOK ##: Too many search results")
+                        return render(
+                            request,
+                            "bookquery/resultsoverflow.html",
+                            {"nodata": "nodata"},
+                        )
+
                     results = query.search_fiction(num_pages)
                     # print(results)
 
@@ -83,6 +92,15 @@ def BookQueryView(request, **kwargs):
             else:
                 try:
                     num_pages = query.get_num_pages_non_fiction()
+
+                    if num_pages > 10:
+                        print("## RENTABOOK ##: Too many search results")
+                        return render(
+                            request,
+                            "bookquery/resultsoverflow.html",
+                            {"nodata": "nodata"},
+                        )
+
                     results = query.search_non_fiction(num_pages)
 
                     if len(results) == 0:

@@ -1,0 +1,29 @@
+{% load static %}
+<html>
+  <head>
+    <title>Too many results.</title>
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'base.css' %}"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="results-box">
+      <h1>Too many results, try a more specific search term. Thanks Iman.</h1>
+      <h2>
+        <a class="search-again-link" href="{% url 'search' %}"
+          >Click to try again.</a
+        >
+      </h2>
+    </div>
+  </body>
+</html>
