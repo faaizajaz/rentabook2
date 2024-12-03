@@ -33,7 +33,7 @@ def BookQueryView(request, **kwargs):
                 try:
                     num_pages = query.get_num_pages_fiction()
 
-                    if num_pages > 10:
+                    if num_pages > 20:
                         print("## RENTABOOK ##: Too many search results")
                         return render(
                             request,
@@ -93,7 +93,7 @@ def BookQueryView(request, **kwargs):
                 try:
                     num_pages = query.get_num_pages_non_fiction()
 
-                    if num_pages > 10:
+                    if num_pages > 20:
                         print("## RENTABOOK ##: Too many search results")
                         return render(
                             request,
