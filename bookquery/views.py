@@ -251,7 +251,7 @@ class DownloadView(APIView):
             return
 
     def get_download_link(self, match_book):
-        mirror_url = match_book["Mirror_1"]
+        mirror_url = match_book["Mirror_2"]
 
         print("# get_download_link #: Downloading page")
         with urllib.request.urlopen(mirror_url) as download_page:
@@ -358,7 +358,8 @@ class DownloadLocalView(APIView):
             return
 
     def get_download_link(self, match_book):
-        mirror_url = match_book["Mirror_1"]
+        mirror_url = match_book["Mirror_2"]
+        print(match_book)
 
         print("# get_download_link #: Downloading page")
         with urllib.request.urlopen(mirror_url) as download_page:
