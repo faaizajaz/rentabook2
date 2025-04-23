@@ -2,6 +2,7 @@ import json
 import os
 import subprocess
 import urllib.request
+from urllib.parse import urljoin
 
 import requests
 from bookquery.models import DownloadCount
@@ -185,8 +186,7 @@ class DownloadView(APIView):
 
         try:
             print("## RENTABOOK ##: Trying to download book")
-            print(match_book)
-            print(download_link)
+
             downloaded_file = self.download_book(match_book, download_link)
             print("## RENTABOOK ##: SUCCESS - Downloaded book.")
         except:
@@ -245,13 +245,15 @@ class DownloadView(APIView):
                 if book["ID"] == book_id:
                     request.session["match_book"] = book
                     return book
+                print("match book testing")
+
             return
         else:
             print("Didn't find a match book.")
             return
 
     def get_download_link(self, match_book):
-        mirror_url = match_book["Mirror_2"]
+        mirror_url = match_book["Mirror_1"]
 
         print("# get_download_link #: Downloading page")
         with urllib.request.urlopen(mirror_url) as download_page:
@@ -260,7 +262,15 @@ class DownloadView(APIView):
         soup = BeautifulSoup(download_page_html, "html.parser")
 
         print("# get_download_link #: Getting download link")
-        download_link = soup.h2.a.get("href")
+        h2_tag = soup.find("h2", string="GET")
+        rel_link = None
+        if h2_tag:
+            a_tag = h2_tag.find_parent("a")
+            if a_tag and a_tag.has_attr("href"):
+                rel_link = a_tag["href"]
+        lg_base_url = "https://libgen.gs/"
+
+        download_link = urljoin(lg_base_url, rel_link)
 
         print("# get_download_link #: SUCCESS - Got the download link")
 
@@ -268,7 +278,7 @@ class DownloadView(APIView):
 
     def download_book(self, match_book, download_link):
         file_title = f"{match_book['Title']}.epub"
-        print(download_link)
+
         print("# download_book #: Downloading book")
         r = requests.get(download_link, allow_redirects=True, verify=False)
         print("# download_book #: Saving book to file")
@@ -358,8 +368,7 @@ class DownloadLocalView(APIView):
             return
 
     def get_download_link(self, match_book):
-        mirror_url = match_book["Mirror_2"]
-        print(match_book)
+        mirror_url = match_book["Mirror_1"]
 
         print("# get_download_link #: Downloading page")
         with urllib.request.urlopen(mirror_url) as download_page:
@@ -368,7 +377,15 @@ class DownloadLocalView(APIView):
         soup = BeautifulSoup(download_page_html, "html.parser")
 
         print("# get_download_link #: Getting download link")
-        download_link = soup.h2.a.get("href")
+        h2_tag = soup.find("h2", string="GET")
+        rel_link = None
+        if h2_tag:
+            a_tag = h2_tag.find_parent("a")
+            if a_tag and a_tag.has_attr("href"):
+                rel_link = a_tag["href"]
+        lg_base_url = "https://libgen.gs/"
+
+        download_link = urljoin(lg_base_url, rel_link)
 
         print("# get_download_link #: SUCCESS - Got the download link")
 

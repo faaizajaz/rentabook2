@@ -30,11 +30,8 @@ class BookQuery(models.Model):
         "Language",
         "Size",
         "Extension",
-        "Mirror_1",
         "Mirror_2",
-        "Mirror_3",
-        "Mirror_4",
-        "Mirror_5",
+        "Mirror_1",
         "Edit",
     ]
 
