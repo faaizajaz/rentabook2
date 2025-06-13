@@ -268,7 +268,7 @@ class DownloadView(APIView):
             a_tag = h2_tag.find_parent("a")
             if a_tag and a_tag.has_attr("href"):
                 rel_link = a_tag["href"]
-        lg_base_url = "https://libgen.gs/"
+        lg_base_url = "https://libgen.is/"
 
         download_link = urljoin(lg_base_url, rel_link)
 
@@ -383,7 +383,7 @@ class DownloadLocalView(APIView):
             a_tag = h2_tag.find_parent("a")
             if a_tag and a_tag.has_attr("href"):
                 rel_link = a_tag["href"]
-        lg_base_url = "https://libgen.gs/"
+        lg_base_url = "https://libgen.is/"
 
         download_link = urljoin(lg_base_url, rel_link)
 
